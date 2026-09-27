@@ -137,56 +137,157 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
       </div>
 
+      {/* Contextual Weather & Terrain Visual Showcase */}
+      <div style={{ marginBottom: 32 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 18 }}>
+          {/* Card 1: Agricultural Ground Reality */}
+          <div className="gov-card" style={{ padding: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+            <div style={{ position: 'relative', height: 190, overflow: 'hidden' }}>
+              <img 
+                src="/images/plateau_paddy_farmland.jpg" 
+                alt="Chota Nagpur Plateau Farmland"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.3s ease' }}
+              />
+              <span className="badge" style={{ position: 'absolute', top: 12, left: 12, background: 'rgba(15, 23, 42, 0.85)', color: '#ffffff', backdropFilter: 'blur(4px)', border: '1px solid rgba(255,255,255,0.2)', fontSize: '0.72rem' }}>
+                Field Topography
+              </span>
+              <span style={{ position: 'absolute', bottom: 8, right: 12, fontSize: '0.7rem', color: '#ffffff', background: 'rgba(0,0,0,0.6)', padding: '2px 8px', borderRadius: 4 }}>
+                Kanke Basin (614–672m ASL)
+              </span>
+            </div>
+            <div style={{ padding: '16px 20px' }}>
+              <h4 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--gov-navy)', marginBottom: 6 }}>
+                {lang === 'hi' ? "पठारी कृषि परिदृश्य एवं सूक्ष्म जलवायु" : "Plateau Terrain & Local Microclimates"}
+              </h4>
+              <p style={{ fontSize: '0.84rem', color: 'var(--neutral-600)', lineHeight: 1.5 }}>
+                {lang === 'hi'
+                  ? "सीढ़ीदार धान के खेत और प्राकृतिक ढलानें एक ही प्रखंड में अलग-अलग जलभराव और वर्षा अवशोषण की स्थिति पैदा करती हैं।"
+                  : "Terraced paddy plots and plateau slopes create contrasting rainfall retention and waterlogging risks across neighboring Panchayats."}
+              </p>
+            </div>
+          </div>
+
+          {/* Card 2: Space & Satellite Observation */}
+          <div className="gov-card" style={{ padding: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+            <div style={{ position: 'relative', height: 190, overflow: 'hidden' }}>
+              <img 
+                src="/images/satellite_weather_view.jpg" 
+                alt="INSAT-3DR Satellite Weather View"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.3s ease' }}
+              />
+              <span className="badge" style={{ position: 'absolute', top: 12, left: 12, background: 'rgba(5, 150, 105, 0.9)', color: '#ffffff', backdropFilter: 'blur(4px)', border: '1px solid rgba(255,255,255,0.2)', fontSize: '0.72rem' }}>
+                Space Telemetry Input
+              </span>
+              <span style={{ position: 'absolute', bottom: 8, right: 12, fontSize: '0.7rem', color: '#ffffff', background: 'rgba(0,0,0,0.6)', padding: '2px 8px', borderRadius: 4 }}>
+                INSAT-3DR TIR Radiance
+              </span>
+            </div>
+            <div style={{ padding: '16px 20px' }}>
+              <h4 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--gov-navy)', marginBottom: 6 }}>
+                {lang === 'hi' ? "उपग्रह प्रेक्षण एवं रडार इनपुट" : "INSAT-3DR Synoptic Observation"}
+              </h4>
+              <p style={{ fontSize: '0.84rem', color: 'var(--neutral-600)', lineHeight: 1.5 }}>
+                {lang === 'hi'
+                  ? "इन्फ्रारेड बादलों के तापमान और मानसूनी दबाव प्रणालियों को ग्रामकास्ट 1 किमी सुपर-रेज़ोल्यूशन मॉडल में प्रोसेस करता है।"
+                  : "Thermal infrared cloud top temperatures and synoptic low-pressure bands are downscaled with local digital elevation models."}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Quick Select Demo Panchayats in Kanke Block */}
       <div style={{ marginBottom: 32 }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-          <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--gov-navy)' }}>
-            {lang === 'hi' ? "कांके प्रखंड के विभिन्न पंचायत परिदृश्य" : "Explore Kanke Block Panchayat Variations"}
-          </h3>
-          <span style={{ fontSize: '0.8rem', color: 'var(--neutral-500)' }}>
-            Different conditions in the same block
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+          <div>
+            <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--gov-navy)' }}>
+              {lang === 'hi' ? "विभिन्न ग्राम पंचायत क्षेत्रों की वास्तविक स्थितियां" : "Real Field Conditions Across Different Gram Panchayats"}
+            </h3>
+            <p style={{ fontSize: '0.8rem', color: 'var(--neutral-500)', marginTop: 2 }}>
+              {lang === 'hi' 
+                ? "प्रत्येक पंचायत का अलग भूगोल, ऊंचाई व वास्तविक कृषि परिदृश्य" 
+                : "Distinct physical landscapes, elevation profiles & micro-climates in the same Block"}
+            </p>
+          </div>
+          <span className="badge badge-navy" style={{ fontSize: '0.72rem' }}>
+            5 Real Micro-Zones
           </span>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 14 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 14 }}>
           {[
             {
               name: "Kanke (HQ)",
+              hindiName: "कांके (मुख्यालय)",
+              terrainType: "Reservoir Margin (628m)",
+              hindiTerrainType: "जलाशय बेसिन (628 मी)",
+              image: "/images/panchayat_kanke_hq.jpg",
               rain: "12–18 mm",
               prob: "72%",
               temp: "28°C",
               risk: "Moderate",
-              desc: "Plateau slope, rain likely this afternoon",
+              desc: "Reservoir lake margin & terraced farm plots; afternoon shower band",
+              hindiDesc: "जलाशय तटवर्ती क्षेत्र व सीढ़ीदार खेत; दोपहर में वर्षा का दौर",
               badgeColor: "var(--warning-amber-bg)",
               textColor: "var(--warning-amber)"
             },
             {
               name: "Sukurhutu",
+              hindiName: "सुकुरहुटू",
+              terrainType: "Valley Basin (614m)",
+              hindiTerrainType: "निचली घाटी (614 मी)",
+              image: "/images/panchayat_sukurhutu.jpg",
               rain: "18–24 mm",
               prob: "84%",
               temp: "27.5°C",
               risk: "High",
-              desc: "Low-lying valley basin, waterlogging vulnerability",
+              desc: "Low-lying clay-loam paddy basin; acute waterlogging vulnerability",
+              hindiDesc: "निचले धान के खेत व दोमट मिट्टी; अत्यधिक जलभराव का खतरा",
               badgeColor: "var(--danger-red-bg)",
               textColor: "var(--danger-red)"
             },
             {
               name: "Pithoria",
+              hindiName: "पिठोरिया",
+              terrainType: "Elevated Ridge (672m)",
+              hindiTerrainType: "ऊंची पहाड़ी कटक (672 मी)",
+              image: "/images/panchayat_pithoria.jpg",
               rain: "8–12 mm",
               prob: "65%",
               temp: "26.2°C",
               risk: "Low",
-              desc: "Elevated ridge (672m), cooler, zero water stagnation",
+              desc: "Elevated rocky slopes with terraced vegetable horticulture; rapid drainage",
+              hindiDesc: "सीढ़ीदार सब्जी की खेती व पहाड़ी ढलान; तेज प्राकृतिक जल निकासी",
               badgeColor: "var(--agri-green-bg)",
               textColor: "var(--agri-green-dark)"
             },
             {
               name: "Borea",
+              hindiName: "बोड़ेया",
+              terrainType: "Riverfront Alluvial (622m)",
+              hindiTerrainType: "नदी तट जलोढ़ (622 मी)",
+              image: "/images/panchayat_borea.jpg",
               rain: "14–20 mm",
               prob: "76%",
               temp: "28.4°C",
               risk: "Moderate",
-              desc: "River corridor, afternoon moisture build-up",
+              desc: "Jumar River riparian corridor with marigold beds & riverbank moisture",
+              hindiDesc: "जुमार नदी तटीय गलियारा, गेंदा फूल की खेती व दोपहर की नमी",
+              badgeColor: "var(--warning-amber-bg)",
+              textColor: "var(--warning-amber)"
+            },
+            {
+              name: "Nagri Rural",
+              hindiName: "नगड़ी ग्रामीण",
+              terrainType: "Upland Plateau (648m)",
+              hindiTerrainType: "ऊपरी पठार (648 मी)",
+              image: "/images/panchayat_nagri.jpg",
+              rain: "10–15 mm",
+              prob: "68%",
+              temp: "27.8°C",
+              risk: "Moderate",
+              desc: "Open plateau upland maize fields with red loam soil; wind bursts",
+              hindiDesc: "खुले ऊपरी पठारी खेत, लाल मिट्टी व मक्का; हवादार मौसम",
               badgeColor: "var(--warning-amber-bg)",
               textColor: "var(--warning-amber)"
             }
@@ -194,37 +295,118 @@ export const HomeView: React.FC<HomeViewProps> = ({
             <div 
               key={item.name}
               className="gov-card"
-              style={{ cursor: 'pointer', padding: 18 }}
+              style={{ 
+                cursor: 'pointer', 
+                padding: 0, 
+                overflow: 'hidden',
+                display: 'flex',
+                flexDirection: 'column',
+                transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                border: '1px solid var(--neutral-200)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-3px)';
+                e.currentTarget.style.boxShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
               onClick={() => {
                 onSelectPanchayat(item.name);
                 onNavigateTo('panchayat');
               }}
             >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-                <span style={{ fontWeight: 700, color: 'var(--gov-navy)', fontSize: '1rem' }}>
-                  {item.name}
+              {/* Individual Real Panchayat Image */}
+              <div style={{ position: 'relative', height: 130, width: '100%', overflow: 'hidden' }}>
+                <img 
+                  src={item.image} 
+                  alt={item.name}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  loading="lazy"
+                />
+                <span 
+                  className="badge" 
+                  style={{ 
+                    position: 'absolute', 
+                    top: 8, 
+                    left: 8, 
+                    background: 'rgba(15, 23, 42, 0.85)', 
+                    color: '#ffffff', 
+                    backdropFilter: 'blur(4px)', 
+                    fontSize: '0.66rem',
+                    padding: '2px 6px',
+                    borderRadius: 4
+                  }}
+                >
+                  {lang === 'hi' ? item.hindiTerrainType : item.terrainType}
                 </span>
-                <span className="badge" style={{ background: item.badgeColor, color: item.textColor, fontSize: '0.68rem' }}>
+
+                <span 
+                  className="badge" 
+                  style={{ 
+                    position: 'absolute', 
+                    top: 8, 
+                    right: 8, 
+                    background: item.badgeColor, 
+                    color: item.textColor, 
+                    fontSize: '0.66rem',
+                    fontWeight: 700,
+                    padding: '2px 8px',
+                    borderRadius: 4
+                  }}
+                >
                   {item.risk} Risk
                 </span>
+
+                <div 
+                  style={{ 
+                    position: 'absolute', 
+                    bottom: 0, 
+                    left: 0, 
+                    right: 0, 
+                    padding: '6px 10px', 
+                    background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%)',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'flex-end'
+                  }}
+                >
+                  <div>
+                    <span style={{ color: '#ffffff', fontWeight: 700, fontSize: '0.92rem', display: 'block' }}>
+                      {item.name}
+                    </span>
+                    <span style={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.7rem' }}>
+                      {item.hindiName}
+                    </span>
+                  </div>
+                  <span style={{ color: '#38bdf8', fontWeight: 700, fontSize: '0.82rem' }}>
+                    {item.temp}
+                  </span>
+                </div>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 8 }}>
-                <span style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--neutral-900)' }}>
-                  {item.rain}
-                </span>
-                <span style={{ fontSize: '0.8rem', color: '#0284c7', fontWeight: 600 }}>
-                  {item.prob} rain
-                </span>
-              </div>
+              {/* Card Body */}
+              <div style={{ padding: '12px 14px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 6 }}>
+                  <div>
+                    <span style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--neutral-900)' }}>
+                      {item.rain}
+                    </span>
+                    <span style={{ fontSize: '0.74rem', color: '#0284c7', fontWeight: 600, marginLeft: 6 }}>
+                      {item.prob} rain
+                    </span>
+                  </div>
+                </div>
 
-              <p style={{ fontSize: '0.8rem', color: 'var(--neutral-600)', marginBottom: 12, minHeight: 36 }}>
-                {item.desc}
-              </p>
+                <p style={{ fontSize: '0.76rem', color: 'var(--neutral-600)', marginBottom: 10, lineHeight: 1.4, flex: 1 }}>
+                  {lang === 'hi' ? item.hindiDesc : item.desc}
+                </p>
 
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 8, borderTop: '1px solid var(--neutral-100)', fontSize: '0.78rem', color: 'var(--gov-navy)', fontWeight: 600 }}>
-                <span>View My Weather</span>
-                <ChevronRight size={14} />
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 8, borderTop: '1px solid var(--neutral-100)', fontSize: '0.74rem', color: 'var(--gov-navy)', fontWeight: 600 }}>
+                  <span>{lang === 'hi' ? "मौसम देखें" : "View Weather"}</span>
+                  <ChevronRight size={13} />
+                </div>
               </div>
             </div>
           ))}

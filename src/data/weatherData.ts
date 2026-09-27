@@ -290,7 +290,10 @@ export const PANCHAYAT_WEATHER_STORE: Record<string, PanchayatData> = {
       panchayatTempC: 28.0,
       varianceReason: "Orographic uplift against central plateau rim concentrates rainfall in Kanke basin, creating a 6.5 mm localized surplus compared to generalized block average.",
       hindiVarianceReason: "पठारी ऊंचाई के कारण बादलों का दबाव कांके बेसिन में अधिक वर्षा (+6.5 मिमी) करता है, जबकि ब्लॉक का सामान्य औसत कम रहता है।"
-    }
+    },
+    imageUrl: "/images/panchayat_kanke_hq.jpg",
+    imageCaption: "Kanke Reservoir basin margin & gentle plateau agricultural slopes",
+    hindiImageCaption: "कांके जलाशय तटवर्ती बेसिन व सीढ़ीदार पठारी कृषि क्षेत्र"
   },
   "Sukurhutu": {
     id: "panchayat-sukurhutu",
@@ -559,7 +562,10 @@ export const PANCHAYAT_WEATHER_STORE: Record<string, PanchayatData> = {
       panchayatTempC: 27.5,
       varianceReason: "Valley topography traps moisture; convective cells stall over Sukurhutu basin resulting in +12.5 mm variation over block NWP baseline.",
       hindiVarianceReason: "घाटी में नमी फंसने से सुकुरहुटू में ब्लॉक औसत (8.5 मिमी) की तुलना में 21 मिमी तक वर्षा संभव है।"
-    }
+    },
+    imageUrl: "/images/panchayat_sukurhutu.jpg",
+    imageCaption: "Low-lying valley basin with saturated clay-loam paddy fields and drainage depressions",
+    hindiImageCaption: "निचला घाटी बेसिन व जलभराव वाले धान के खेत एवं प्राकृतिक जल निकास"
   },
   "Pithoria": {
     id: "panchayat-pithoria",
@@ -828,7 +834,10 @@ export const PANCHAYAT_WEATHER_STORE: Record<string, PanchayatData> = {
       panchayatTempC: 26.2,
       varianceReason: "Higher elevation produces faster wind clearing and 3.0°C cooler ambient temperature compared to uniform block forecast.",
       hindiVarianceReason: "ऊंचाई और हवा के प्रवाह से तापमान ब्लॉक औसत से 3.0°C ठंडा रहता है।"
-    }
+    },
+    imageUrl: "/images/panchayat_pithoria.jpg",
+    imageCaption: "Elevated ridge slopes (672m ASL) with terraced vegetable horticulture & red laterite soil",
+    hindiImageCaption: "ऊंची पहाड़ी कटक (672 मी) व सीढ़ीदार सब्जी बागवानी एवं लाल लेटराइट मिट्टी"
   },
   "Borea": {
     id: "panchayat-borea",
@@ -1097,9 +1106,348 @@ export const PANCHAYAT_WEATHER_STORE: Record<string, PanchayatData> = {
       panchayatTempC: 28.4,
       varianceReason: "River microclimate generates higher surface latent heat flux, driving +8.5 mm excess rain over block average.",
       hindiVarianceReason: "नदी किनारे नमी अधिक होने से वर्षा ब्लॉक औसत से दुगुनी हो सकती है।"
+    },
+    imageUrl: "/images/panchayat_borea.jpg",
+    imageCaption: "Riparian Jumar River corridor with commercial marigold floriculture & vegetable beds",
+    hindiImageCaption: "जुमार नदी तटीय गलियारा व गेंदा फूल एवं व्यावसायिक सब्जी की खेती"
+  },
+  "Nagri Rural": {
+    id: "panchayat-nagri-rural",
+    name: "Nagri Rural",
+    hindiName: "नगड़ी ग्रामीण",
+    block: "Nagri",
+    district: "Ranchi",
+    state: "Jharkhand",
+    lat: 23.3370,
+    lng: 85.2530,
+    elevation: 648,
+    updatedTime: "Today, 08:00 AM",
+    hindiUpdatedTime: "आज, सुबह 08:00 बजे",
+    imageUrl: "/images/panchayat_nagri.jpg",
+    imageCaption: "Open western plateau upland farmlands with red loam soil and maize cultivation",
+    hindiImageCaption: "पश्चिमी पठार के खुले ऊपरी खेत, लाल दोमट मिट्टी व मक्का की खेती",
+    current: {
+      temp: 27.8,
+      rainfallExpected: "10–15 mm",
+      rainfallExpectedMm: 12,
+      rainProb: 68,
+      humidity: 76,
+      windSpeedKmH: 15,
+      windDirection: "SE",
+      pressureHpa: 1007,
+      status: "Scattered showers with gusty winds",
+      hindiStatus: "हवादार बौछारें"
+    },
+    forecast7Day: [
+      {
+        day: "Today",
+        hindiDay: "आज",
+        date: "28 Sep",
+        tempMin: 21,
+        tempMax: 28,
+        rainProb: 68,
+        rainfallMm: "10–15 mm",
+        rainfallVal: 12,
+        condition: "Scattered Showers",
+        hindiCondition: "छिटपुट बौछारें",
+        icon: "cloud-rain",
+        riskLevel: "Moderate",
+        riskText: "Upland soil runoff",
+        hindiRiskText: "ऊपरी खेतों में मिट्टी कटाव"
+      },
+      {
+        day: "Tomorrow",
+        hindiDay: "कल",
+        date: "29 Sep",
+        tempMin: 22,
+        tempMax: 29,
+        rainProb: 35,
+        rainfallMm: "3–6 mm",
+        rainfallVal: 4,
+        condition: "Light Showers",
+        hindiCondition: "हल्की फुहारें",
+        icon: "cloud",
+        riskLevel: "Low",
+        riskText: "Low hazard",
+        hindiRiskText: "कम जोखिम"
+      },
+      {
+        day: "Wed",
+        hindiDay: "बुध",
+        date: "30 Sep",
+        tempMin: 20,
+        tempMax: 30,
+        rainProb: 20,
+        rainfallMm: "0–1 mm",
+        rainfallVal: 0.5,
+        condition: "Mostly Sunny",
+        hindiCondition: "अधिकतर धूप",
+        icon: "sun",
+        riskLevel: "Low",
+        riskText: "Field operations ideal",
+        hindiRiskText: "खेत कार्य उत्तम"
+      },
+      {
+        day: "Thu",
+        hindiDay: "गुरु",
+        date: "01 Oct",
+        tempMin: 21,
+        tempMax: 26,
+        rainProb: 75,
+        rainfallMm: "20–30 mm",
+        rainfallVal: 24,
+        condition: "Heavy Rain",
+        hindiCondition: "भारी बारिश",
+        icon: "heavy-rain",
+        riskLevel: "High",
+        riskText: "Water surge in unbunded plots",
+        hindiRiskText: "बिना मेड़ वाले खेतों में जल बहाव"
+      },
+      {
+        day: "Fri",
+        hindiDay: "शुक्र",
+        date: "02 Oct",
+        tempMin: 20,
+        tempMax: 27,
+        rainProb: 60,
+        rainfallMm: "8–14 mm",
+        rainfallVal: 11,
+        condition: "Intermittent Rain",
+        hindiCondition: "रुक-रुक कर बारिश",
+        icon: "cloud-rain",
+        riskLevel: "Moderate",
+        riskText: "High soil moisture",
+        hindiRiskText: "अधिक नमी"
+      },
+      {
+        day: "Sat",
+        hindiDay: "शनि",
+        date: "03 Oct",
+        tempMin: 21,
+        tempMax: 29,
+        rainProb: 25,
+        rainfallMm: "1–3 mm",
+        rainfallVal: 2,
+        condition: "Partly Cloudy",
+        hindiCondition: "आंशिक बादल",
+        icon: "cloud",
+        riskLevel: "Low",
+        riskText: "Normal",
+        hindiRiskText: "सामान्य"
+      },
+      {
+        day: "Sun",
+        hindiDay: "रवि",
+        date: "04 Oct",
+        tempMin: 20,
+        tempMax: 31,
+        rainProb: 10,
+        rainfallMm: "0 mm",
+        rainfallVal: 0,
+        condition: "Warm & Sunny",
+        hindiCondition: "खुली धूप",
+        icon: "sun",
+        riskLevel: "Low",
+        riskText: "Harvest safe",
+        hindiRiskText: "कटाई अनुकूल"
+      }
+    ],
+    hourly: [
+      { time: "08:00 AM", temp: 24, rainProb: 30, rainfallMm: 0.1, humidity: 76 },
+      { time: "11:00 AM", temp: 27, rainProb: 45, rainfallMm: 1.2, humidity: 72 },
+      { time: "02:00 PM", temp: 28, rainProb: 68, rainfallMm: 4.8, humidity: 78 },
+      { time: "05:00 PM", temp: 26, rainProb: 55, rainfallMm: 3.6, humidity: 82 },
+      { time: "08:00 PM", temp: 24, rainProb: 35, rainfallMm: 1.5, humidity: 85 },
+      { time: "11:00 PM", temp: 23, rainProb: 20, rainfallMm: 0.4, humidity: 88 }
+    ],
+    risks: [
+      {
+        id: "risk-upland-runoff",
+        name: "Upland Soil Runoff",
+        hindiName: "ऊपरी खेतों में मिट्टी कटाव",
+        severity: "Moderate",
+        icon: "droplets",
+        description: "Open red loam slopes vulnerable to topsoil displacement during intense rain bursts.",
+        hindiDescription: "तेज बारिश में खुली ढलान वाले खेतों की ऊपरी उपजाऊ मिट्टी बहने का जोखिम।",
+        affectedArea: "Tanr upland plots"
+      },
+      {
+        id: "risk-gusty-winds",
+        name: "Gusty Winds",
+        hindiName: "तेज हवाएं",
+        severity: "Moderate",
+        icon: "wind",
+        description: "Plateau funneling causes surface wind bursts up to 28 km/h.",
+        hindiDescription: "पठारी ढलान पर 28 किमी/घंटा तक तेज हवाएं चलने की संभावना।",
+        affectedArea: "Maize stands"
+      }
+    ],
+    guidance: [
+      {
+        category: "irrigation",
+        title: "Irrigation",
+        hindiTitle: "सिंचाई",
+        icon: "sprout",
+        status: "delay",
+        recommendation: "Adequate natural rain expected today (10–15 mm). Hold irrigation for upland maize and pulses.",
+        hindiRecommendation: "आज 10–15 मिमी बारिश अनुमानित है। मक्का और दलहन में अतिरिक्त सिंचाई न करें।",
+        urgency: "medium"
+      },
+      {
+        category: "fieldWork",
+        title: "Field Work",
+        hindiTitle: "खेत कार्य",
+        icon: "wheat",
+        status: "caution",
+        recommendation: "Strengthen bunds in tanr (upland) plots to retain moisture and prevent gully erosion.",
+        hindiRecommendation: "खेत की मेड़ों को मजबूत करें ताकि उपजाऊ मिट्टी बह न सके।",
+        urgency: "high"
+      },
+      {
+        category: "harvesting",
+        title: "Harvesting",
+        hindiTitle: "फसल कटाई",
+        icon: "shopping-bag",
+        status: "delay",
+        recommendation: "Keep harvested pulses in shed storage to prevent mould from humid air.",
+        hindiRecommendation: "कटी दालों और मक्के को गोदाम में सुरक्षित रखें।",
+        urgency: "high"
+      },
+      {
+        category: "spraying",
+        title: "Spraying",
+        hindiTitle: "दवा छिड़काव",
+        icon: "spray-can",
+        status: "delay",
+        recommendation: "Wind gusts and rain wash-off make foliar sprays ineffective today.",
+        hindiRecommendation: "हवा और बारिश के कारण कीटनाशक छिड़काव स्थगित रखें।",
+        urgency: "high"
+      }
+    ],
+    whyPredict: {
+      factors: [
+        {
+          title: "Upland Plateau Terrain",
+          hindiTitle: "ऊपरी पठारी स्थलाकृति",
+          desc: "Elevation at 648m exposes open fields to easterly cloud bands with rapid convective build-up.",
+          hindiDesc: "648 मीटर ऊंचाई पर खुले खेत पूर्वी बादलों के सीधे संपर्क में आते हैं।"
+        },
+        {
+          title: "Red Loam Moisture Deficit",
+          hindiTitle: "लाल दोमट मिट्टी वाष्पीकरण",
+          desc: "Rapid drainage in porous red soil requires immediate rainfall utilization before afternoon runoff.",
+          hindiDesc: "लाल मिट्टी पानी जल्दी सोखती है और सतह जल्दी सूख जाती है।"
+        }
+      ],
+      localPatternNote: "Nagri's open western expanse experiences rapid wind changes and localized afternoon showers.",
+      hindiLocalPatternNote: "नगड़ी के खुले मैदानों में हवा की दिशा तेजी से बदलती है और दोपहर बाद बारिश होती है।"
+    },
+    confidence: {
+      level: "High",
+      hindiLevel: "उच्च विश्वसनीयता",
+      explanation: "Calibrated with nearest automatic weather station at Birsa Agricultural University research sub-station.",
+      hindiExplanation: "बिरसा कृषि विश्वविद्यालय अनुसंधान केंद्र के स्वचालित मौसम स्टेशन से सत्यापित।",
+      satellitePass: "INSAT-3DR 07:15 AM IST",
+      stationDistanceKm: 4.1
+    },
+    fingerprint: {
+      rainfallPattern: "Moderate convective showers",
+      hindiRainfallPattern: "मध्यम संवहनीय बौछारें",
+      terrain: "Open plateau upland (648 m)",
+      hindiTerrain: "खुला ऊपरी पठार (648 मी)",
+      elevationM: 648,
+      vegetation: "Extensive maize, pulses & millet",
+      hindiVegetation: "मक्का, दलहन एवं मोटे अनाज की सघन खेती",
+      seasonality: "Monsoon dependent",
+      hindiSeasonality: "पूर्णतः मानसून पर आधारित",
+      historicalBias: "+2.1 mm over block model",
+      whyItMatters: "GRAMCAST recognizes Nagri's higher plateau altitude and porous soil, tuning rainfall advice specifically for upland crop roots.",
+      hindiWhyItMatters: "ग्रामकास्ट नगड़ी की ऊंचाई और लाल मिट्टी को समझकर मक्का व दलहन फसलों के अनुकूल सलाह देता है।"
+    },
+    blockForecastComparison: {
+      blockRainfallMm: 8.5,
+      panchayatRainfallMm: 12.0,
+      blockTempC: 29.2,
+      panchayatTempC: 27.8,
+      varianceReason: "Higher elevation produces faster wind clearing and 1.4°C cooler ambient temperature compared to uniform block forecast.",
+      hindiVarianceReason: "ऊंचाई और हवा के प्रवाह से तापमान ब्लॉक औसत से 1.4°C ठंडा रहता है।"
     }
   }
 };
+
+export function getPanchayatImage(name: string): { url: string; caption: string; hindiCaption: string; alt: string } {
+  const map: Record<string, { url: string; caption: string; hindiCaption: string; alt: string }> = {
+    'Kanke (HQ)': {
+      url: '/images/panchayat_kanke_hq.jpg',
+      caption: 'Kanke Reservoir basin margin & gentle plateau agricultural slopes (628m ASL)',
+      hindiCaption: 'कांके जलाशय तटवर्ती बेसिन व सीढ़ीदार पठारी कृषि क्षेत्र (628 मी)',
+      alt: 'Kanke HQ Panchayat landscape with reservoir margin'
+    },
+    'Sukurhutu': {
+      url: '/images/panchayat_sukurhutu.jpg',
+      caption: 'Low-lying valley basin with waterlogging clay-loam paddy fields (614m ASL)',
+      hindiCaption: 'निचला घाटी बेसिन व जलभराव वाले धान के खेत (614 मी)',
+      alt: 'Sukurhutu Panchayat low-lying valley basin'
+    },
+    'Pithoria': {
+      url: '/images/panchayat_pithoria.jpg',
+      caption: 'Elevated ridge slopes & terraced vegetable horticulture with red laterite soil (672m ASL)',
+      hindiCaption: 'ऊंची पहाड़ी कटक व सीढ़ीदार सब्जी बागवानी (672 मी)',
+      alt: 'Pithoria Panchayat elevated ridge slopes'
+    },
+    'Borea': {
+      url: '/images/panchayat_borea.jpg',
+      caption: 'Riparian Jumar River corridor with commercial marigold & vegetable beds (622m ASL)',
+      hindiCaption: 'जुमार नदी तटीय गलियारा व गेंदा फूल-सब्जी की खेती (622 मी)',
+      alt: 'Borea Panchayat river corridor'
+    },
+    'Nagri Rural': {
+      url: '/images/panchayat_nagri.jpg',
+      caption: 'Open western plateau upland farmlands with red loam soil and maize fields (648m ASL)',
+      hindiCaption: 'पश्चिमी पठार के खुले ऊपरी खेत, लाल दोमट मिट्टी व मक्का (648 मी)',
+      alt: 'Nagri Rural Panchayat open upland plateau'
+    }
+  };
+
+  if (map[name]) return map[name];
+
+  // Deterministic fallback for any other panchayat in India
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) hash = (hash << 5) - hash + name.charCodeAt(i);
+  const profiles = [
+    {
+      url: '/images/panchayat_kanke_hq.jpg',
+      caption: `${name} reservoir basin & plateau agricultural terraces`,
+      hindiCaption: `${name} जलाशय तटवर्ती बेसिन व सीढ़ीदार कृषि क्षेत्र`,
+      alt: `${name} terrain overview`
+    },
+    {
+      url: '/images/panchayat_sukurhutu.jpg',
+      caption: `${name} low-lying valley basin with clay-loam paddy fields`,
+      hindiCaption: `${name} निचला घाटी बेसिन व सघन धान के खेत`,
+      alt: `${name} valley basin`
+    },
+    {
+      url: '/images/panchayat_pithoria.jpg',
+      caption: `${name} elevated ridge slopes & terraced vegetable horticulture`,
+      hindiCaption: `${name} ऊंची पहाड़ी कटक व सीढ़ीदार बागवानी`,
+      alt: `${name} ridge slopes`
+    },
+    {
+      url: '/images/panchayat_borea.jpg',
+      caption: `${name} riparian river corridor with fertile alluvial farming`,
+      hindiCaption: `${name} नदी तटीय गलियारा व उपजाऊ जलोढ़ खेती`,
+      alt: `${name} river corridor`
+    },
+    {
+      url: '/images/panchayat_nagri.jpg',
+      caption: `${name} open upland plateau farmlands with red loam soil`,
+      hindiCaption: `${name} खुले ऊपरी पठारी खेत व लाल दोमट मिट्टी`,
+      alt: `${name} plateau upland`
+    }
+  ];
+  return profiles[Math.abs(hash) % profiles.length];
+}
 
 // Fallback/Deterministic generator for any other Panchayat across India
 export function getPanchayatWeatherData(panchayatName: string, blockName: string, districtName: string, stateName: string): PanchayatData {
@@ -1389,6 +1737,27 @@ export function getPanchayatWeatherData(panchayatName: string, blockName: string
       panchayatTempC: 28.0 + tempOffset,
       varianceReason: `Elevation (${elevation} m) and moisture convergence produce a ${Math.abs(baseRain - 9.0).toFixed(1)} mm deviation from generalized block forecast.`,
       hindiVarianceReason: `स्थानीय ऊंचाई (${elevation} मी) के कारण ब्लॉक औसत से अंतर दिखाई दे रहा है।`
-    }
+    },
+    imageUrl: [
+      "/images/panchayat_kanke_hq.jpg",
+      "/images/panchayat_sukurhutu.jpg",
+      "/images/panchayat_pithoria.jpg",
+      "/images/panchayat_borea.jpg",
+      "/images/panchayat_nagri.jpg"
+    ][absHash % 5],
+    imageCaption: [
+      `${panchayatName} reservoir basin margin & plateau agricultural terraces`,
+      `${panchayatName} low-lying valley basin with clay-loam paddy fields`,
+      `${panchayatName} elevated ridge slopes (${elevation}m ASL) & vegetable horticulture`,
+      `${panchayatName} riparian river corridor with fertile alluvial farming`,
+      `${panchayatName} open upland plateau farmlands with red loam soil`
+    ][absHash % 5],
+    hindiImageCaption: [
+      `${panchayatName} जलाशय तटवर्ती बेसिन व सीढ़ीदार कृषि क्षेत्र`,
+      `${panchayatName} निचला घाटी बेसिन व सघन धान के खेत`,
+      `${panchayatName} ऊंची पहाड़ी कटक (${elevation} मी) व सीढ़ीदार बागवानी`,
+      `${panchayatName} नदी तटीय गलियारा व उपजाऊ जलोढ़ खेती`,
+      `${panchayatName} खुले ऊपरी पठारी खेत व लाल दोमट मिट्टी`
+    ][absHash % 5]
   };
 }

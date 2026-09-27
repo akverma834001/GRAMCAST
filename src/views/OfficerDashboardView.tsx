@@ -8,6 +8,7 @@ import {
 import { Language, RiskSeverity } from '../types';
 import { TRANSLATIONS } from '../data/translations';
 import { KANKE_BLOCK_OFFICER_SUMMARY } from '../data/validationData';
+import { getPanchayatImage } from '../data/weatherData';
 
 interface OfficerDashboardViewProps {
   onSelectPanchayat: (name: string) => void;
@@ -275,11 +276,20 @@ export const OfficerDashboardView: React.FC<OfficerDashboardViewProps> = ({
                     style={{ cursor: 'pointer' }}
                   />
                 </td>
-                <td style={{ fontWeight: 700, color: 'var(--gov-navy)' }}>
-                  {row.name}
-                  <span style={{ display: 'block', fontSize: '0.72rem', color: 'var(--neutral-500)', fontWeight: 400 }}>
-                    {row.hindiName}
-                  </span>
+                <td>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <img 
+                      src={getPanchayatImage(row.name).url} 
+                      alt={row.name} 
+                      style={{ width: 40, height: 32, borderRadius: 4, objectFit: 'cover', border: '1px solid var(--neutral-300)', flexShrink: 0 }} 
+                    />
+                    <div>
+                      <span style={{ fontWeight: 700, color: 'var(--gov-navy)' }}>{row.name}</span>
+                      <span style={{ display: 'block', fontSize: '0.72rem', color: 'var(--neutral-500)', fontWeight: 400 }}>
+                        {row.hindiName}
+                      </span>
+                    </div>
+                  </div>
                 </td>
                 <td>{row.elevation}m</td>
                 <td style={{ fontWeight: 700, color: row.rainfallMm > 18 ? '#dc2626' : row.rainfallMm > 12 ? 'var(--gov-navy)' : '#059669' }}>
@@ -364,11 +374,24 @@ export const OfficerDashboardView: React.FC<OfficerDashboardViewProps> = ({
 
             <div style={{ display: 'grid', gridTemplateColumns: `repeat(${comparedPanchayatsData.length}, 1fr)`, gap: 16, marginBottom: 20 }}>
               {comparedPanchayatsData.map((p) => (
-                <div key={p.name} style={{ background: 'var(--neutral-50)', border: '1px solid var(--neutral-300)', borderRadius: 10, padding: 16 }}>
-                  <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--gov-navy)', marginBottom: 4 }}>
+                <div key={p.name} style={{ background: 'var(--neutral-50)', border: '1px solid var(--neutral-300)', borderRadius: 10, padding: 14 }}>
+                  {/* Real Panchayat Landscape Photo */}
+                  {(() => {
+                    const pImg = getPanchayatImage(p.name);
+                    return (
+                      <div style={{ height: 110, borderRadius: 6, overflow: 'hidden', marginBottom: 10, position: 'relative' }}>
+                        <img src={pImg.url} alt={pImg.alt} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                        <span style={{ position: 'absolute', bottom: 4, left: 4, right: 4, background: 'rgba(0,0,0,0.75)', color: '#fff', fontSize: '0.65rem', padding: '2px 6px', borderRadius: 4, lineHeight: 1.2 }}>
+                          {pImg.caption}
+                        </span>
+                      </div>
+                    );
+                  })()}
+
+                  <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--gov-navy)', marginBottom: 2 }}>
                     {p.name}
                   </h3>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--neutral-500)', marginBottom: 12 }}>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--neutral-500)', marginBottom: 10 }}>
                     Elevation: <strong>{p.elevation} m</strong>
                   </div>
 

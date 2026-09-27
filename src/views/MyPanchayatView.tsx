@@ -173,6 +173,98 @@ export const MyPanchayatView: React.FC<MyPanchayatViewProps> = ({
         </div>
       </div>
 
+      {/* Real Panchayat Field Profile Banner */}
+      <div 
+        className="gov-card" 
+        style={{ 
+          padding: 0, 
+          overflow: 'hidden', 
+          marginBottom: 24, 
+          border: '1px solid var(--neutral-200)',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))',
+          gap: 0
+        }}
+      >
+        <div style={{ position: 'relative', minHeight: 210, overflow: 'hidden' }}>
+          <img 
+            src={weather.imageUrl || '/images/panchayat_kanke_hq.jpg'} 
+            alt={weather.name}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+          />
+          <span 
+            className="badge" 
+            style={{ 
+              position: 'absolute', 
+              top: 10, 
+              left: 10, 
+              background: 'rgba(15, 23, 42, 0.85)', 
+              color: '#ffffff', 
+              backdropFilter: 'blur(4px)', 
+              fontSize: '0.72rem',
+              border: '1px solid rgba(255,255,255,0.2)',
+              padding: '3px 8px'
+            }}
+          >
+            {lang === 'hi' ? "वास्तविक पंचायत क्षेत्र परिदृश्य" : "Real Panchayat Area Ground Landscape"}
+          </span>
+          <div 
+            style={{ 
+              position: 'absolute', 
+              bottom: 0, 
+              left: 0, 
+              right: 0, 
+              background: 'linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0) 100%)',
+              padding: '12px 14px 8px',
+              color: '#ffffff',
+              fontSize: '0.75rem',
+              lineHeight: 1.3
+            }}
+          >
+            {lang === 'hi' ? (weather.hindiImageCaption || weather.imageCaption) : weather.imageCaption}
+          </div>
+        </div>
+
+        <div style={{ padding: '20px 22px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+            <span className="badge badge-navy" style={{ fontSize: '0.7rem' }}>
+              {lang === 'hi' ? "स्थानीय सूक्ष्म-जलवायु प्रोफाइल" : "Microclimate Terrain Profile"}
+            </span>
+            <span style={{ fontSize: '0.8rem', color: 'var(--neutral-500)' }}>
+              Elevation: <strong>{weather.elevation}m ASL</strong>
+            </span>
+          </div>
+
+          <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--gov-navy)', marginBottom: 8 }}>
+            {lang === 'hi' ? `${weather.hindiName} का विशिष्ट भौगोलिक क्षेत्र` : `${weather.name} Physical Catchment & Farm Biome`}
+          </h3>
+
+          <p style={{ fontSize: '0.83rem', color: 'var(--neutral-600)', lineHeight: 1.5, marginBottom: 12 }}>
+            {lang === 'hi'
+              ? `ग्रामकास्ट इस क्षेत्र की स्थानीय ढलान, जल संचयन और मिट्टी की प्रकृति के आधार पर ब्लॉक के औसत 12 किमी पूर्वानुमान को 1 किमी रिजॉल्यूशन पर डाउनस्केल करता है।`
+              : `GRAMCAST accounts for ${weather.name}'s specific micro-topography, surface roughness, and vegetation to calibrate coarse 12km block NWP into field-level guidance.`}
+          </p>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: 8, background: 'var(--neutral-50)', padding: 10, borderRadius: 8, border: '1px solid var(--neutral-200)', fontSize: '0.78rem' }}>
+            <div>
+              <span style={{ color: 'var(--neutral-500)', display: 'block' }}>Terrain:</span>
+              <strong style={{ color: 'var(--gov-navy)' }}>{weather.fingerprint.terrain.split('(')[0]}</strong>
+            </div>
+            <div>
+              <span style={{ color: 'var(--neutral-500)', display: 'block' }}>Rain vs Block:</span>
+              <strong style={{ color: weather.blockForecastComparison.panchayatRainfallMm > weather.blockForecastComparison.blockRainfallMm ? '#0284c7' : '#059669' }}>
+                {weather.blockForecastComparison.panchayatRainfallMm > weather.blockForecastComparison.blockRainfallMm ? '+' : ''}
+                {(weather.blockForecastComparison.panchayatRainfallMm - weather.blockForecastComparison.blockRainfallMm).toFixed(1)} mm
+              </strong>
+            </div>
+            <div>
+              <span style={{ color: 'var(--neutral-500)', display: 'block' }}>AWS Telemetry:</span>
+              <strong style={{ color: 'var(--neutral-800)' }}>{weather.confidence.stationDistanceKm} km</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* SECTION 7: 7-Day Forecast Horizontal Timeline */}
       <div style={{ marginBottom: 28 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
@@ -471,8 +563,54 @@ export const MyPanchayatView: React.FC<MyPanchayatViewProps> = ({
           </div>
         </div>
 
-        <div style={{ padding: 12, background: '#eff6ff', borderRadius: 8, border: '1px solid #bfdbfe', fontSize: '0.84rem', color: '#1e3a8a' }}>
+        <div style={{ padding: 12, background: '#eff6ff', borderRadius: 8, border: '1px solid #bfdbfe', fontSize: '0.84rem', color: '#1e3a8a', marginBottom: 16 }}>
           <strong>{t.whyFingerprintMatters}:</strong> {lang === 'hi' ? weather.fingerprint.hindiWhyItMatters : weather.fingerprint.whyItMatters}
+        </div>
+
+        {/* Local Ground Truth & Observational Feeds Dual Card */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 14 }}>
+          {/* Real Panchayat Field Photo */}
+          <div style={{ background: 'var(--neutral-50)', padding: 12, borderRadius: 10, border: '1px solid var(--neutral-200)' }}>
+            <div style={{ borderRadius: 8, overflow: 'hidden', height: 140, position: 'relative', marginBottom: 8 }}>
+              <img 
+                src={weather.imageUrl || '/images/panchayat_kanke_hq.jpg'} 
+                alt={weather.name}
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+              <span style={{ position: 'absolute', bottom: 6, left: 6, fontSize: '0.68rem', color: '#ffffff', background: 'rgba(15,23,42,0.85)', padding: '2px 6px', borderRadius: 4 }}>
+                {weather.name} Catchment • {weather.elevation}m ASL
+              </span>
+            </div>
+            <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--gov-navy)' }}>
+              {lang === 'hi' ? `${weather.hindiName} स्थलाकृति` : `${weather.name} Field Topography`}
+            </div>
+            <div style={{ fontSize: '0.74rem', color: 'var(--neutral-600)', marginTop: 2 }}>
+              {lang === 'hi' ? (weather.hindiImageCaption || weather.imageCaption) : weather.imageCaption}
+            </div>
+          </div>
+
+          {/* Telemetry AWS Station Photo */}
+          <div style={{ background: 'var(--neutral-50)', padding: 12, borderRadius: 10, border: '1px solid var(--neutral-200)' }}>
+            <div style={{ borderRadius: 8, overflow: 'hidden', height: 140, position: 'relative', marginBottom: 8 }}>
+              <img 
+                src="/images/agri_weather_station.jpg" 
+                alt="Local Agro-Meteorological Weather Station"
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+              <span style={{ position: 'absolute', bottom: 6, left: 6, fontSize: '0.68rem', color: '#ffffff', background: 'rgba(15,23,42,0.85)', padding: '2px 6px', borderRadius: 4 }}>
+                Telemetry AWS Unit • {weather.confidence.stationDistanceKm} km away
+              </span>
+            </div>
+            <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--gov-navy)' }}>
+              Automated Weather Station (AWS)
+            </div>
+            <div style={{ fontSize: '0.74rem', color: 'var(--neutral-600)', marginTop: 2 }}>
+              Tipping bucket rain gauge (0.2mm) • Ultrasonic anemometer • TDR soil probe (15 & 30cm)
+            </div>
+            <div style={{ color: '#059669', fontWeight: 600, fontSize: '0.72rem', marginTop: 4 }}>
+              ✓ 15-minute telemetry sync with IMD/KVK network
+            </div>
+          </div>
         </div>
       </div>
     </div>

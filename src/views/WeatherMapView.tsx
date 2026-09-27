@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { Language, PanchayatData } from '../types';
 import { KANKE_PANCHAYATS_GEOJSON, KANKE_BLOCK_COARSE_GRID } from '../data/geoJsonData';
+import { getPanchayatImage } from '../data/weatherData';
 
 interface WeatherMapViewProps {
   weather: PanchayatData;
@@ -356,9 +357,41 @@ export const WeatherMapView: React.FC<WeatherMapViewProps> = ({
             <h3 style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--gov-navy)', marginBottom: 2 }}>
               {selectedFeature.name}
             </h3>
-            <div style={{ fontSize: '0.8rem', color: 'var(--neutral-500)', marginBottom: 16 }}>
+            <div style={{ fontSize: '0.8rem', color: 'var(--neutral-500)', marginBottom: 12 }}>
               Kanke Block • Elev: {selectedFeature.elevation}m
             </div>
+
+            {/* Real Area Photo */}
+            {(() => {
+              const pImage = getPanchayatImage(selectedFeature.name);
+              return (
+                <div style={{ position: 'relative', height: 135, borderRadius: 8, overflow: 'hidden', marginBottom: 14, border: '1px solid var(--neutral-200)' }}>
+                  <img 
+                    src={pImage.url} 
+                    alt={pImage.alt} 
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} 
+                  />
+                  <span 
+                    className="badge" 
+                    style={{ 
+                      position: 'absolute', 
+                      top: 6, 
+                      left: 6, 
+                      background: 'rgba(15, 23, 42, 0.85)', 
+                      color: '#ffffff', 
+                      backdropFilter: 'blur(4px)', 
+                      fontSize: '0.65rem',
+                      padding: '2px 6px'
+                    }}
+                  >
+                    Real Ground View
+                  </span>
+                  <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%)', padding: '6px 8px', color: '#ffffff', fontSize: '0.7rem', lineHeight: 1.25 }}>
+                    {lang === 'hi' ? pImage.hindiCaption : pImage.caption}
+                  </div>
+                </div>
+              );
+            })()}
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10, background: 'var(--neutral-50)', padding: 14, borderRadius: 8, border: '1px solid var(--neutral-200)', marginBottom: 16 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

@@ -137,6 +137,9 @@ export interface PanchayatData {
     varianceReason: string;
     hindiVarianceReason: string;
   };
+  imageUrl?: string;
+  imageCaption?: string;
+  hindiImageCaption?: string;
 }
 
 export interface BlockComparisonData {

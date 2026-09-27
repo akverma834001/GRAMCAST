@@ -114,6 +114,47 @@ export const AboutView: React.FC<AboutViewProps> = ({ lang }) => {
           </div>
         </div>
 
+        {/* Visual Pair: Space Observation & Ground Reality */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16, marginBottom: 20 }}>
+          <div style={{ borderRadius: 10, overflow: 'hidden', border: '1px solid var(--neutral-300)' }}>
+            <div style={{ height: 160, position: 'relative' }}>
+              <img 
+                src="/images/satellite_weather_view.jpg" 
+                alt="INSAT-3DR Satellite Meteorological Telemetry"
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+              <span style={{ position: 'absolute', top: 8, left: 8, background: 'rgba(15,23,42,0.85)', color: '#fff', fontSize: '0.7rem', padding: '2px 8px', borderRadius: 4, fontWeight: 600 }}>
+                1. Orbital Observation
+              </span>
+            </div>
+            <div style={{ padding: 12, background: 'var(--neutral-50)' }}>
+              <div style={{ fontWeight: 700, fontSize: '0.88rem', color: 'var(--gov-navy)' }}>Space Telemetry (INSAT-3DR)</div>
+              <div style={{ fontSize: '0.78rem', color: 'var(--neutral-600)', marginTop: 2 }}>
+                Monitors cloud-top brightness temperature, moisture flux, and frontal systems over the subcontinent.
+              </div>
+            </div>
+          </div>
+
+          <div style={{ borderRadius: 10, overflow: 'hidden', border: '1px solid var(--neutral-300)' }}>
+            <div style={{ height: 160, position: 'relative' }}>
+              <img 
+                src="/images/agri_weather_station.jpg" 
+                alt="Automatic Agro-Meteorological Weather Station"
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+              <span style={{ position: 'absolute', top: 8, left: 8, background: 'rgba(5,150,105,0.9)', color: '#fff', fontSize: '0.7rem', padding: '2px 8px', borderRadius: 4, fontWeight: 600 }}>
+                2. Rural Ground Truth
+              </span>
+            </div>
+            <div style={{ padding: 12, background: 'var(--neutral-50)' }}>
+              <div style={{ fontWeight: 700, fontSize: '0.88rem', color: 'var(--gov-navy)' }}>Automated Weather Stations (AWS)</div>
+              <div style={{ fontSize: '0.78rem', color: 'var(--neutral-600)', marginTop: 2 }}>
+                Collocated farm sensors capture microclimate ground truth for recursive Kalman filter calibration.
+              </div>
+            </div>
+          </div>
+        </div>
+
         <ul style={{ fontSize: '0.88rem', color: 'var(--neutral-700)', paddingLeft: 20, lineHeight: 1.6 }}>
           <li><strong>Physics Invariance:</strong> Respects mass conservation, hydrostatic equilibrium, and moist adiabatic lapse rate.</li>
           <li><strong>Farmer-Centric Presentation:</strong> Never exposes neural network architectures or complex formulas to farmers.</li>

@@ -238,6 +238,28 @@ export const ValidationView: React.FC<ValidationViewProps> = ({ lang }) => {
         </div>
       </div>
 
+      {/* Ground Station Reference Card */}
+      <div className="gov-card" style={{ marginBottom: 28, display: 'grid', gridTemplateColumns: '180px 1fr', gap: 16, alignItems: 'center' }}>
+        <div style={{ height: 120, borderRadius: 8, overflow: 'hidden' }}>
+          <img 
+            src="/images/agri_weather_station.jpg" 
+            alt="Reference Agro-Meteorological Station"
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
+        </div>
+        <div>
+          <div style={{ fontSize: '0.92rem', fontWeight: 700, color: 'var(--gov-navy)', marginBottom: 4 }}>
+            Ground Truth Telemetry: Kanke Agro-Met Observatory
+          </div>
+          <p style={{ fontSize: '0.82rem', color: 'var(--neutral-600)', lineHeight: 1.45, marginBottom: 6 }}>
+            Observed weather values are ingested from calibrated automated weather stations (AWS) equipped with dual tipping bucket rain gauges (0.2 mm sensitivity), air hygrometers, and sonic anemometers.
+          </p>
+          <div style={{ fontSize: '0.75rem', color: '#059669', fontWeight: 600 }}>
+            Station Lat/Lon: 23.44°N, 85.32°E • Elevation: 628 m • Verification Interval: Hourly
+          </div>
+        </div>
+      </div>
+
       {/* Validation Disclaimer Notice */}
       <div style={{ padding: 14, background: '#fffbeb', borderRadius: 8, border: '1px solid #fde68a', fontSize: '0.84rem', color: '#92400e', display: 'flex', alignItems: 'center', gap: 8 }}>
         <Info size={18} color="#d97706" flex-shrink={0} />
