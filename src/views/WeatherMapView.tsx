@@ -6,10 +6,19 @@ import {
   Droplets, 
   Thermometer, 
   ShieldAlert, 
-  ExternalLink 
+  ExternalLink,
+  ArrowRight,
+  Sparkles,
+  Info,
+  CheckCircle2
 } from 'lucide-react';
 import { Language, PanchayatData } from '../types';
-import { KANKE_PANCHAYATS_GEOJSON, KANKE_BLOCK_COARSE_GRID } from '../data/geoJsonData';
+import { 
+  KANKE_PANCHAYATS_GEOJSON, 
+  KANKE_BLOCK_COARSE_GRID,
+  BODH_GAYA_PANCHAYATS_GEOJSON,
+  BODH_GAYA_BLOCK_COARSE_GRID
+} from '../data/geoJsonData';
 import { getPanchayatImage } from '../data/weatherData';
 
 interface WeatherMapViewProps {
@@ -31,8 +40,15 @@ export const WeatherMapView: React.FC<WeatherMapViewProps> = ({
   const mapInstanceRef = useRef<L.Map | null>(null);
   const geoJsonLayerRef = useRef<L.GeoJSON | null>(null);
 
+  // Active block selection: Bodh Gaya (Bihar) or Kanke (Jharkhand)
+  const [selectedBlock, setSelectedBlock] = useState<'Bodh Gaya' | 'Kanke'>(
+    weather.block === 'Bodh Gaya' ? 'Bodh Gaya' : 'Bodh Gaya'
+  );
+
   const [activeLayer, setActiveLayer] = useState<MapLayerType>('rainfall');
-  const [resolutionView, setResolutionView] = useState<'gramcast' | 'block'>('gramcast');
+  const [resolutionView, setResolutionView] = useState<'block' | 'gramcast'>('gramcast');
+
+  // Currently inspected feature
   const [selectedFeature, setSelectedFeature] = useState<{
     name: string;
     hindiName: string;
@@ -43,39 +59,43 @@ export const WeatherMapView: React.FC<WeatherMapViewProps> = ({
     risk: 'Low' | 'Moderate' | 'High';
     confidence: string;
     elevation: number;
+    description: string;
   }>({
-    name: weather.name,
-    hindiName: weather.hindiName,
-    rainfallMm: weather.current.rainfallExpectedMm,
-    rainProb: weather.current.rainProb,
-    tempC: weather.current.temp,
-    humidity: weather.current.humidity,
-    risk: (weather.risks[0]?.severity || 'Moderate') as any,
-    confidence: weather.confidence.level,
-    elevation: weather.elevation
+    name: selectedBlock === 'Bodh Gaya' ? "Bakrour" : "Sukurhutu",
+    hindiName: selectedBlock === 'Bodh Gaya' ? "बकरौर" : "सुकुरहुटू",
+    rainfallMm: selectedBlock === 'Bodh Gaya' ? 54.0 : 21.0,
+    rainProb: selectedBlock === 'Bodh Gaya' ? 88 : 84,
+    tempC: selectedBlock === 'Bodh Gaya' ? 30.2 : 27.5,
+    humidity: selectedBlock === 'Bodh Gaya' ? 84 : 84,
+    risk: "High",
+    confidence: "High (91%)",
+    elevation: selectedBlock === 'Bodh Gaya' ? 114 : 614,
+    description: selectedBlock === 'Bodh Gaya' ? "Falgu river eastern riparian lowlands" : "Low-lying valley basin"
   });
 
-  // Color functions based on layer
+  // Color functions based on layer and resolution
   const getFeatureColor = (props: any, layer: MapLayerType, isBlock: boolean) => {
     if (isBlock) {
-      return '#3b82f6';
+      return '#3b82f6'; // Uniform block color
     }
 
     if (layer === 'rainfall') {
       const r = props.rainfallMm || 10;
-      if (r > 20) return '#1e3a8a'; // deep navy
-      if (r > 15) return '#0284c7'; // ocean blue
-      if (r > 10) return '#38bdf8'; // light sky blue
-      return '#bae6fd';
+      if (r >= 50) return '#1e3a8a'; // Deep navy
+      if (r >= 40) return '#0284c7'; // Ocean blue
+      if (r >= 20) return '#0369a1';
+      if (r >= 15) return '#38bdf8'; // Sky blue
+      return '#7dd3fc';
     } else if (layer === 'temperature') {
-      const temp = props.tempC || 28;
-      if (temp > 28) return '#ea580c'; // orange
-      if (temp > 27) return '#f59e0b'; // amber
-      return '#eab308'; // yellow
+      const temp = props.tempC || 30;
+      if (temp >= 32) return '#dc2626';
+      if (temp >= 30) return '#ea580c';
+      if (temp >= 28) return '#f59e0b';
+      return '#eab308';
     } else if (layer === 'humidity') {
       const h = props.humidity || 75;
-      if (h > 82) return '#065f46'; // dark emerald
-      if (h > 78) return '#059669'; // emerald
+      if (h >= 82) return '#065f46';
+      if (h >= 78) return '#059669';
       return '#10b981';
     } else {
       // Risk layer
@@ -86,86 +106,81 @@ export const WeatherMapView: React.FC<WeatherMapViewProps> = ({
     }
   };
 
+  // Initialize or update map
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
+    const centerCoords: [number, number] = selectedBlock === 'Bodh Gaya' 
+      ? [24.695, 84.975] 
+      : [23.45, 85.32];
+
+    const zoomLevel = selectedBlock === 'Bodh Gaya' ? 13 : 12;
+
     if (!mapInstanceRef.current) {
-      // Initialize map centered on Kanke Block (lat: 23.45, lng: 85.32)
       const map = L.map(mapContainerRef.current, {
-        center: [23.45, 85.32],
-        zoom: 12,
+        center: centerCoords,
+        zoom: zoomLevel,
         scrollWheelZoom: true
       });
 
-      // Credible OpenStreetMap base layer
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors | IMD/GRAMCAST',
+        attribution: '&copy; OpenStreetMap contributors | IMD/GRAMCAST Downscaling',
         maxZoom: 18
       }).addTo(map);
 
       mapInstanceRef.current = map;
+    } else {
+      mapInstanceRef.current.setView(centerCoords, zoomLevel);
     }
 
     const map = mapInstanceRef.current;
 
-    // Remove existing GeoJSON layer
+    // Remove old layer
     if (geoJsonLayerRef.current) {
       map.removeLayer(geoJsonLayerRef.current);
     }
 
-    // Determine data source based on resolutionView
-    const dataSource = resolutionView === 'gramcast' ? KANKE_PANCHAYATS_GEOJSON : KANKE_BLOCK_COARSE_GRID;
+    // Select GeoJSON based on block and resolution
+    const dataSource = selectedBlock === 'Bodh Gaya'
+      ? (resolutionView === 'gramcast' ? BODH_GAYA_PANCHAYATS_GEOJSON : BODH_GAYA_BLOCK_COARSE_GRID)
+      : (resolutionView === 'gramcast' ? KANKE_PANCHAYATS_GEOJSON : KANKE_BLOCK_COARSE_GRID);
+
+    const isBlockMode = resolutionView === 'block';
 
     const newGeoJsonLayer = L.geoJSON(dataSource as any, {
       style: (feature) => {
         const props = feature?.properties || {};
-        const isBlock = resolutionView === 'block';
         return {
-          fillColor: getFeatureColor(props, activeLayer, isBlock),
-          weight: isBlock ? 3 : 1.8,
+          fillColor: getFeatureColor(props, activeLayer, isBlockMode),
+          weight: isBlockMode ? 3 : 2,
           opacity: 1,
-          color: isBlock ? '#1e3a8a' : '#0f2744',
-          dashArray: isBlock ? '6, 6' : '',
-          fillOpacity: isBlock ? 0.35 : 0.65
+          color: isBlockMode ? '#1e3a8a' : '#ffffff',
+          dashArray: isBlockMode ? '6, 6' : '',
+          fillOpacity: isBlockMode ? 0.45 : 0.78
         };
       },
       onEachFeature: (feature, layer) => {
         const props = feature.properties || {};
-        const name = props.name || "Panchayat";
+        const labelText = isBlockMode 
+          ? `<strong>${props.name}</strong><br/>Uniform Coarse Forecast: ${props.uniformRainfallMm || 45} mm`
+          : `<strong>${props.name} (${props.hindiName || ''})</strong><br/>Downscaled Rain: <strong>${props.rainfallMm} mm</strong><br/>Temp: ${props.tempC}°C | Risk: ${props.risk}`;
 
-        // Bind tooltip
-        layer.bindTooltip(name, {
-          permanent: false,
-          direction: 'center',
-          className: 'panchayat-polygon-tooltip'
-        });
+        layer.bindTooltip(labelText, { sticky: true, className: 'map-custom-tooltip' });
 
-        // Click handler
         layer.on({
           click: () => {
-            if (resolutionView === 'gramcast') {
+            if (!isBlockMode) {
               setSelectedFeature({
                 name: props.name,
                 hindiName: props.hindiName || props.name,
-                rainfallMm: props.rainfallMm || 15,
+                rainfallMm: props.rainfallMm,
                 rainProb: props.rainProb || 70,
-                tempC: props.tempC || 28,
-                humidity: props.humidity || 78,
+                tempC: props.tempC,
+                humidity: props.humidity || 75,
                 risk: props.risk || 'Moderate',
-                confidence: props.confidence || 'Moderate',
-                elevation: props.elevation || 620
-              });
-            } else {
-              setSelectedFeature({
-                name: props.name,
-                hindiName: props.name,
-                rainfallMm: props.uniformRainfallMm || 8.5,
-                rainProb: 60,
-                tempC: props.uniformTempC || 29,
-                humidity: 75,
-                risk: 'Low',
-                confidence: 'Coarse NWP',
-                elevation: 620
+                confidence: props.confidence || 'High',
+                elevation: props.elevation || 620,
+                description: props.description || ''
               });
             }
           },
@@ -173,7 +188,7 @@ export const WeatherMapView: React.FC<WeatherMapViewProps> = ({
             const target = e.target;
             target.setStyle({
               weight: 3,
-              fillOpacity: 0.85
+              fillOpacity: 0.9
             });
           },
           mouseout: (e) => {
@@ -185,38 +200,151 @@ export const WeatherMapView: React.FC<WeatherMapViewProps> = ({
 
     geoJsonLayerRef.current = newGeoJsonLayer;
 
-  }, [activeLayer, resolutionView]);
+  }, [selectedBlock, activeLayer, resolutionView]);
 
   return (
     <div>
-      {/* Map Header & Controls */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-        <div>
-          <h1 style={{ fontSize: '1.4rem', fontWeight: 700, color: 'var(--gov-navy)', display: 'flex', alignItems: 'center', gap: 8 }}>
-            <Layers size={22} color="var(--gov-navy)" />
-            <span>{lang === 'hi' ? "पंचायत मौसम मानचित्र (GIS नक्शा)" : "Panchayat Weather Map (GIS)"}</span>
-          </h1>
-          <p style={{ fontSize: '0.82rem', color: 'var(--neutral-500)' }}>
-            Kanke Block, Ranchi District • Click any Panchayat to inspect localized micro-climate
-          </p>
+      {/* Title & Core Problem Transformation Statement */}
+      <div style={{ marginBottom: 16 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+          <span className="badge badge-navy" style={{ fontSize: '0.72rem' }}>
+            SIH Problem Statement SIH26074
+          </span>
+          <span className="badge badge-high" style={{ fontSize: '0.72rem' }}>
+            5-Second Evaluation Visual
+          </span>
+        </div>
+        <h1 style={{ fontSize: '1.45rem', fontWeight: 800, color: 'var(--gov-navy)', display: 'flex', alignItems: 'center', gap: 8 }}>
+          <Layers size={24} color="var(--gov-navy)" />
+          <span>{lang === 'hi' ? "पंचायत स्तर मौसम मानचित्र (GIS नक्शा)" : "Spatial Downscaling GIS Map — Before vs After"}</span>
+        </h1>
+        <p style={{ fontSize: '0.84rem', color: 'var(--neutral-600)', marginTop: 2 }}>
+          {lang === 'hi'
+            ? "एक ही प्रखंड में एक समान मौसम नहीं रहता। ब्लॉक के मोटे 12 किमी पूर्वानुमान को अलग-अलग पंचायतों के 1 किमी रिजॉल्यूशन में देखें।"
+            : "Demonstrating how a single coarse Block-level prediction (12 km) is resolved into contrasting Panchayat-level micro-forecasts (1 km)."}
+        </p>
+      </div>
+
+      {/* SECTION 9: THE 5-SECOND VISUAL COMPARISON BANNER */}
+      <div 
+        className="gov-card" 
+        style={{ 
+          padding: 16, 
+          marginBottom: 20, 
+          background: 'linear-gradient(135deg, #f8fafc 0%, #edf2f7 100%)',
+          border: '1px solid #cbd5e1'
+        }}
+      >
+        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 14 }}>
+          {/* Before downscaling pill */}
+          <div 
+            onClick={() => setResolutionView('block')}
+            style={{ 
+              flex: 1, 
+              minWidth: 260,
+              padding: '12px 16px', 
+              background: resolutionView === 'block' ? '#eff6ff' : '#ffffff', 
+              borderRadius: 8, 
+              border: resolutionView === 'block' ? '2px solid #2563eb' : '1px solid var(--neutral-300)',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
+              <span className="badge" style={{ background: '#fef3c7', color: '#92400e', fontWeight: 700, fontSize: '0.68rem' }}>
+                BEFORE DOWNSCALING
+              </span>
+              <span style={{ fontSize: '0.72rem', color: 'var(--neutral-500)' }}>Resolution: 10–12 km</span>
+            </div>
+            <h4 style={{ fontSize: '0.98rem', fontWeight: 800, color: 'var(--gov-navy)', margin: '4px 0' }}>
+              Coarse Block-Level Forecast
+            </h4>
+            <div style={{ fontSize: '0.82rem', color: 'var(--neutral-700)' }}>
+              {selectedBlock === 'Bodh Gaya' ? (
+                <span>One uniform value: <strong>Rainfall: 45 mm</strong> for all Panchayats</span>
+              ) : (
+                <span>One uniform value: <strong>Rainfall: 8.5 mm</strong> for all Panchayats</span>
+              )}
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--neutral-400)' }}>
+            <ArrowRight size={22} color="var(--gov-navy)" />
+          </div>
+
+          {/* After downscaling pill */}
+          <div 
+            onClick={() => setResolutionView('gramcast')}
+            style={{ 
+              flex: 1, 
+              minWidth: 260,
+              padding: '12px 16px', 
+              background: resolutionView === 'gramcast' ? '#f0fdf4' : '#ffffff', 
+              borderRadius: 8, 
+              border: resolutionView === 'gramcast' ? '2px solid #16a34a' : '1px solid var(--neutral-300)',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
+              <span className="badge badge-low" style={{ fontWeight: 800, fontSize: '0.68rem' }}>
+                AFTER DOWNSCALING (GRAMCAST)
+              </span>
+              <span style={{ fontSize: '0.72rem', color: 'var(--neutral-500)' }}>Resolution: 1 km</span>
+            </div>
+            <h4 style={{ fontSize: '0.98rem', fontWeight: 800, color: '#14532d', margin: '4px 0' }}>
+              GRAMCAST Panchayat-Level Forecast
+            </h4>
+            <div style={{ fontSize: '0.82rem', color: '#166534', fontWeight: 600 }}>
+              {selectedBlock === 'Bodh Gaya' ? (
+                <span>Itawan: 36mm • Bodh Gaya: 41mm • Mocharim: 48mm • Bakrour: 54mm</span>
+              ) : (
+                <span>Pithoria: 10mm • Nagri: 12mm • Kanke HQ: 15mm • Borea: 17mm • Sukurhutu: 21mm</span>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Map Controls Bar */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: 12, marginBottom: 14 }}>
+        {/* Demonstration Block Switcher */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--gov-navy)' }}>
+            Block:
+          </span>
+          <button
+            className={`btn btn-sm ${selectedBlock === 'Bodh Gaya' ? 'btn-primary' : 'btn-secondary'}`}
+            onClick={() => setSelectedBlock('Bodh Gaya')}
+            style={{ fontSize: '0.78rem' }}
+          >
+            Bodh Gaya (Gaya, Bihar)
+          </button>
+          <button
+            className={`btn btn-sm ${selectedBlock === 'Kanke' ? 'btn-primary' : 'btn-secondary'}`}
+            onClick={() => setSelectedBlock('Kanke')}
+            style={{ fontSize: '0.78rem' }}
+          >
+            Kanke (Ranchi, Jharkhand)
+          </button>
         </div>
 
-        {/* Resolution Switcher */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: '#ffffff', padding: 4, borderRadius: 8, border: '1px solid var(--neutral-300)' }}>
+        {/* Resolution Toggle */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#ffffff', padding: 4, borderRadius: 8, border: '1px solid var(--neutral-300)' }}>
           <button
             onClick={() => setResolutionView('block')}
             style={{
               padding: '6px 12px',
               borderRadius: 6,
               border: 'none',
-              fontSize: '0.8rem',
+              fontSize: '0.78rem',
               fontWeight: resolutionView === 'block' ? 700 : 500,
-              background: resolutionView === 'block' ? 'var(--neutral-100)' : 'transparent',
+              background: resolutionView === 'block' ? '#e2e8f0' : 'transparent',
               color: resolutionView === 'block' ? 'var(--gov-navy)' : 'var(--neutral-600)',
               cursor: 'pointer'
             }}
           >
-            Block View (12km Coarse)
+            1. Before: Coarse Block Forecast (12km)
           </button>
           <button
             onClick={() => setResolutionView('gramcast')}
@@ -224,35 +352,34 @@ export const WeatherMapView: React.FC<WeatherMapViewProps> = ({
               padding: '6px 12px',
               borderRadius: 6,
               border: 'none',
-              fontSize: '0.8rem',
+              fontSize: '0.78rem',
               fontWeight: resolutionView === 'gramcast' ? 700 : 500,
               background: resolutionView === 'gramcast' ? 'var(--gov-navy)' : 'transparent',
               color: resolutionView === 'gramcast' ? '#ffffff' : 'var(--neutral-600)',
               cursor: 'pointer'
             }}
           >
-            GRAMCAST View (1km Downscaled)
+            2. After: GRAMCAST Downscaled (1km)
           </button>
         </div>
       </div>
 
-      {/* Layer Toggle Bar */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 8, marginBottom: 16 }}>
-        <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--neutral-600)', marginRight: 4 }}>
-          {lang === 'hi' ? "परतें (Layers):" : "Active Weather Layer:"}
+      {/* Layer Switcher Bar */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 8, marginBottom: 14 }}>
+        <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--neutral-600)', marginRight: 4 }}>
+          {lang === 'hi' ? "मौसम पैरामीटर:" : "Weather Parameter:"}
         </span>
-
         {[
-          { key: 'rainfall', label: lang === 'hi' ? 'वर्षा (Rainfall)' : 'Rainfall (mm)', icon: <Droplets size={14} /> },
-          { key: 'temperature', label: lang === 'hi' ? 'तापमान (Temperature)' : 'Temperature (°C)', icon: <Thermometer size={14} /> },
-          { key: 'humidity', label: lang === 'hi' ? 'आर्द्रता (Humidity)' : 'Humidity (%)', icon: <Droplets size={14} /> },
-          { key: 'risk', label: lang === 'hi' ? 'मौसम जोखिम (Risk)' : 'Weather Risk', icon: <ShieldAlert size={14} /> }
+          { key: 'rainfall', label: lang === 'hi' ? 'वर्षा (Rainfall mm)' : 'Rainfall (mm)', icon: <Droplets size={14} /> },
+          { key: 'temperature', label: lang === 'hi' ? 'तापमान (Temperature °C)' : 'Temperature (°C)', icon: <Thermometer size={14} /> },
+          { key: 'humidity', label: lang === 'hi' ? 'आर्द्रता (Humidity %)' : 'Humidity (%)', icon: <Droplets size={14} /> },
+          { key: 'risk', label: lang === 'hi' ? 'मौसम जोखिम (Risk)' : 'Agricultural Risk', icon: <ShieldAlert size={14} /> }
         ].map((item) => (
           <button
             key={item.key}
             onClick={() => setActiveLayer(item.key as MapLayerType)}
             className={`btn btn-sm ${activeLayer === item.key ? 'btn-primary' : 'btn-secondary'}`}
-            style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+            style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.76rem', padding: '5px 10px' }}
           >
             {item.icon}
             <span>{item.label}</span>
@@ -260,13 +387,48 @@ export const WeatherMapView: React.FC<WeatherMapViewProps> = ({
         ))}
       </div>
 
-      {/* Map Layout: Left Map, Right Panel */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 320px', gap: 20 }}>
-        {/* Leaflet Map Div */}
-        <div style={{ position: 'relative', height: 520, borderRadius: 12, overflow: 'hidden', border: '1px solid var(--neutral-300)', boxShadow: 'var(--shadow-sm)' }}>
-          <div ref={mapContainerRef} style={{ width: '100%', height: '100%' }}></div>
+      {/* Map Layout: GIS Left, Inspection Panel Right */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 340px', gap: 18, marginBottom: 24 }}>
+        {/* Left: Map Container */}
+        <div style={{ position: 'relative' }}>
+          <div 
+            ref={mapContainerRef} 
+            style={{ 
+              height: 520, 
+              width: '100%', 
+              borderRadius: 12, 
+              overflow: 'hidden', 
+              border: '1px solid var(--neutral-300)',
+              boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)'
+            }}
+          />
 
-          {/* Map Legend Overlay */}
+          {/* Map Overlay Badge */}
+          <div style={{
+            position: 'absolute',
+            top: 14,
+            left: 14,
+            zIndex: 1000,
+            background: 'rgba(15, 23, 42, 0.88)',
+            backdropFilter: 'blur(6px)',
+            color: '#ffffff',
+            padding: '6px 12px',
+            borderRadius: 6,
+            fontSize: '0.74rem',
+            border: '1px solid rgba(255,255,255,0.2)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8
+          }}>
+            <span style={{ width: 8, height: 8, borderRadius: '50%', background: resolutionView === 'gramcast' ? '#34d399' : '#f59e0b' }}></span>
+            <span>
+              {resolutionView === 'gramcast' 
+                ? `GRAMCAST 1km Downscaled Panchayats (${selectedBlock} Block)`
+                : `Source 12km Coarse NWP Grid (${selectedBlock} Block)`}
+            </span>
+          </div>
+
+          {/* Map Legend */}
           <div style={{
             position: 'absolute',
             bottom: 16,
@@ -275,7 +437,7 @@ export const WeatherMapView: React.FC<WeatherMapViewProps> = ({
             backdropFilter: 'blur(4px)',
             borderRadius: 8,
             padding: '10px 14px',
-            fontSize: '0.75rem',
+            fontSize: '0.74rem',
             border: '1px solid rgba(0,0,0,0.1)',
             zIndex: 1000,
             boxShadow: '0 2px 6px rgba(0,0,0,0.1)'
@@ -290,19 +452,19 @@ export const WeatherMapView: React.FC<WeatherMapViewProps> = ({
               <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <span style={{ width: 14, height: 14, background: '#1e3a8a', borderRadius: 2 }}></span>
-                  <span>&gt; 20 mm (Heavy rain spell)</span>
+                  <span>&gt; 50 mm (Heavy rain spell)</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <span style={{ width: 14, height: 14, background: '#0284c7', borderRadius: 2 }}></span>
-                  <span>15 – 20 mm (Moderate rain)</span>
+                  <span>40 – 50 mm (Moderate-Heavy)</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <span style={{ width: 14, height: 14, background: '#38bdf8', borderRadius: 2 }}></span>
-                  <span>10 – 15 mm (Light-Moderate)</span>
+                  <span>15 – 40 mm (Moderate rain)</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <span style={{ width: 14, height: 14, background: '#bae6fd', borderRadius: 2 }}></span>
-                  <span>&lt; 10 mm (Scattered showers)</span>
+                  <span style={{ width: 14, height: 14, background: '#7dd3fc', borderRadius: 2 }}></span>
+                  <span>&lt; 15 mm (Light showers)</span>
                 </div>
               </div>
             )}
@@ -311,61 +473,41 @@ export const WeatherMapView: React.FC<WeatherMapViewProps> = ({
               <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <span style={{ width: 14, height: 14, background: '#dc2626', borderRadius: 2 }}></span>
-                  <span>High Risk (Runoff / Saturated)</span>
+                  <span>High Risk (Waterlogging alert)</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <span style={{ width: 14, height: 14, background: '#f59e0b', borderRadius: 2 }}></span>
-                  <span>Moderate Risk (Spray / Harvest delay)</span>
+                  <span>Moderate Risk (Spray / harvest delay)</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <span style={{ width: 14, height: 14, background: '#10b981', borderRadius: 2 }}></span>
-                  <span>Low Risk (Normal field conditions)</span>
+                  <span>Low Risk (Normal field operations)</span>
                 </div>
-              </div>
-            )}
-
-            {activeLayer === 'temperature' && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <span style={{ width: 14, height: 14, background: '#ea580c', borderRadius: 2 }}></span>
-                  <span>&gt; 28°C (Warmer valley floor)</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <span style={{ width: 14, height: 14, background: '#eab308', borderRadius: 2 }}></span>
-                  <span>&lt; 27°C (Cooler plateau ridge)</span>
-                </div>
-              </div>
-            )}
-
-            {activeLayer === 'humidity' && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{ width: 14, height: 14, background: '#059669', borderRadius: 2 }}></span>
-                <span>70% — 88% Moisture Saturation</span>
               </div>
             )}
           </div>
         </div>
 
-        {/* SECTION 12: Compact Information Panel */}
-        <div className="gov-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        {/* Right: Inspection Side Panel */}
+        <div className="gov-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: 18 }}>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.75rem', color: 'var(--neutral-500)', textTransform: 'uppercase', marginBottom: 4 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.74rem', color: 'var(--neutral-500)', textTransform: 'uppercase', marginBottom: 4 }}>
               <MapPin size={14} color="#0284c7" />
-              <span>Selected Panchayat</span>
+              <span>Inspected Panchayat Polygon</span>
             </div>
 
-            <h3 style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--gov-navy)', marginBottom: 2 }}>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--gov-navy)', marginBottom: 2 }}>
               {selectedFeature.name}
             </h3>
-            <div style={{ fontSize: '0.8rem', color: 'var(--neutral-500)', marginBottom: 12 }}>
-              Kanke Block • Elev: {selectedFeature.elevation}m
+            <div style={{ fontSize: '0.78rem', color: 'var(--neutral-500)', marginBottom: 10 }}>
+              {selectedBlock} Block • Elevation: {selectedFeature.elevation}m ASL
             </div>
 
             {/* Real Area Photo */}
             {(() => {
               const pImage = getPanchayatImage(selectedFeature.name);
               return (
-                <div style={{ position: 'relative', height: 135, borderRadius: 8, overflow: 'hidden', marginBottom: 14, border: '1px solid var(--neutral-200)' }}>
+                <div style={{ position: 'relative', height: 130, borderRadius: 8, overflow: 'hidden', marginBottom: 12, border: '1px solid var(--neutral-200)' }}>
                   <img 
                     src={pImage.url} 
                     alt={pImage.alt} 
@@ -386,65 +528,60 @@ export const WeatherMapView: React.FC<WeatherMapViewProps> = ({
                   >
                     Real Ground View
                   </span>
-                  <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%)', padding: '6px 8px', color: '#ffffff', fontSize: '0.7rem', lineHeight: 1.25 }}>
+                  <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%)', padding: '6px 8px', color: '#ffffff', fontSize: '0.68rem', lineHeight: 1.25 }}>
                     {lang === 'hi' ? pImage.hindiCaption : pImage.caption}
                   </div>
                 </div>
               );
             })()}
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, background: 'var(--neutral-50)', padding: 14, borderRadius: 8, border: '1px solid var(--neutral-200)', marginBottom: 16 }}>
+            {/* Metric Items */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, background: 'var(--neutral-50)', padding: 12, borderRadius: 8, border: '1px solid var(--neutral-200)', marginBottom: 12 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '0.84rem', color: 'var(--neutral-600)' }}>Expected rainfall:</span>
-                <span style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--gov-navy)' }}>
+                <span style={{ fontSize: '0.8rem', color: 'var(--neutral-600)' }}>Downscaled rain:</span>
+                <span style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--gov-navy)' }}>
                   {selectedFeature.rainfallMm} mm
                 </span>
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '0.84rem', color: 'var(--neutral-600)' }}>Rain probability:</span>
-                <span style={{ fontSize: '0.95rem', fontWeight: 700, color: '#0284c7' }}>
+                <span style={{ fontSize: '0.8rem', color: 'var(--neutral-600)' }}>Rain probability:</span>
+                <span style={{ fontSize: '0.88rem', fontWeight: 700, color: '#0284c7' }}>
                   {selectedFeature.rainProb}%
                 </span>
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '0.84rem', color: 'var(--neutral-600)' }}>Temperature:</span>
-                <span style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--neutral-800)' }}>
+                <span style={{ fontSize: '0.8rem', color: 'var(--neutral-600)' }}>Temperature:</span>
+                <span style={{ fontSize: '0.88rem', fontWeight: 600, color: 'var(--neutral-800)' }}>
                   {selectedFeature.tempC}°C
                 </span>
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '0.84rem', color: 'var(--neutral-600)' }}>Risk:</span>
-                <span className={`badge ${selectedFeature.risk === 'High' ? 'badge-high' : selectedFeature.risk === 'Moderate' ? 'badge-moderate' : 'badge-low'}`}>
+                <span style={{ fontSize: '0.8rem', color: 'var(--neutral-600)' }}>Risk level:</span>
+                <span className={`badge ${selectedFeature.risk === 'High' ? 'badge-high' : selectedFeature.risk === 'Moderate' ? 'badge-moderate' : 'badge-low'}`} style={{ fontSize: '0.68rem' }}>
                   {selectedFeature.risk}
-                </span>
-              </div>
-
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '0.84rem', color: 'var(--neutral-600)' }}>Confidence:</span>
-                <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--agri-green-dark)' }}>
-                  {selectedFeature.confidence}
                 </span>
               </div>
             </div>
 
-            <div style={{ fontSize: '0.8rem', color: 'var(--neutral-600)', lineHeight: 1.45, padding: '8px 10px', background: '#eff6ff', borderRadius: 6, border: '1px solid #bfdbfe' }}>
-              <strong>Notice:</strong> Click on different Panchayats on the map to compare micro-climatic variances across Kanke block.
+            {/* Spatial Influence explanation */}
+            <div style={{ fontSize: '0.76rem', color: 'var(--neutral-600)', lineHeight: 1.45, padding: '8px 10px', background: '#eff6ff', borderRadius: 6, border: '1px solid #bfdbfe' }}>
+              <strong>Model considers:</strong> {selectedFeature.description || "Local elevation and drainage curvature."}
             </div>
           </div>
 
           <button 
             className="btn btn-primary"
-            style={{ width: '100%', marginTop: 16 }}
+            style={{ width: '100%', marginTop: 14 }}
             onClick={() => {
               onSelectPanchayat(selectedFeature.name);
-              onNavigateTo('panchayat');
+              onNavigateTo('advisory');
             }}
           >
-            <span>{lang === 'hi' ? "विवरण देखें" : "VIEW DETAILS"}</span>
-            <ExternalLink size={16} />
+            <span>{lang === 'hi' ? "कृषि सलाह देखें" : "View Crop Advisory"}</span>
+            <ExternalLink size={15} />
           </button>
         </div>
       </div>

@@ -288,3 +288,156 @@ export const KANKE_BLOCK_COARSE_GRID: GeoJSON.FeatureCollection = {
     }
   ]
 };
+
+// Bodh Gaya Block (Gaya, Bihar) Demonstration Datasets
+export const BODH_GAYA_PANCHAYATS_GEOJSON: GeoJSON.FeatureCollection = {
+  type: "FeatureCollection",
+  features: [
+    {
+      type: "Feature",
+      id: "bakrour",
+      properties: {
+        name: "Bakrour",
+        hindiName: "बकरौर",
+        rainfallMm: 54.0,
+        rainProb: 88,
+        tempC: 30.2,
+        humidity: 84,
+        risk: "High",
+        confidence: "High",
+        elevation: 114,
+        description: "Falgu river eastern riparian lowlands; convective enhancement"
+      },
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [84.990, 24.685],
+            [85.020, 24.690],
+            [85.025, 24.715],
+            [84.995, 24.720],
+            [84.985, 24.700],
+            [84.990, 24.685]
+          ]
+        ]
+      }
+    },
+    {
+      type: "Feature",
+      id: "mocharim",
+      properties: {
+        name: "Mocharim",
+        hindiName: "मोचरिम",
+        rainfallMm: 48.0,
+        rainProb: 80,
+        tempC: 30.8,
+        humidity: 79,
+        risk: "Moderate",
+        confidence: "High",
+        elevation: 111,
+        description: "Low-lying alluvial depression near southern canal"
+      },
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [84.965, 24.665],
+            [84.995, 24.670],
+            [84.990, 24.695],
+            [84.960, 24.690],
+            [84.955, 24.675],
+            [84.965, 24.665]
+          ]
+        ]
+      }
+    },
+    {
+      type: "Feature",
+      id: "bodh-gaya-rural",
+      properties: {
+        name: "Bodh Gaya Rural",
+        hindiName: "बोधगया ग्रामीण",
+        rainfallMm: 41.0,
+        rainProb: 74,
+        tempC: 31.5,
+        humidity: 75,
+        risk: "Moderate",
+        confidence: "High",
+        elevation: 118,
+        description: "Central undulating agrarian plain surrounding main township"
+      },
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [84.965, 24.695],
+            [84.990, 24.695],
+            [84.995, 24.720],
+            [84.960, 24.725],
+            [84.950, 24.705],
+            [84.965, 24.695]
+          ]
+        ]
+      }
+    },
+    {
+      type: "Feature",
+      id: "itawan",
+      properties: {
+        name: "Itawan",
+        hindiName: "इटवां",
+        rainfallMm: 36.0,
+        rainProb: 65,
+        tempC: 32.1,
+        humidity: 71,
+        risk: "Low",
+        confidence: "High",
+        elevation: 125,
+        description: "Open western plateau fringe; well-drained sandy loam"
+      },
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [84.935, 24.680],
+            [84.965, 24.685],
+            [84.960, 24.720],
+            [84.930, 24.715],
+            [84.925, 24.695],
+            [84.935, 24.680]
+          ]
+        ]
+      }
+    }
+  ]
+};
+
+export const BODH_GAYA_BLOCK_COARSE_GRID: GeoJSON.FeatureCollection = {
+  type: "FeatureCollection",
+  features: [
+    {
+      type: "Feature",
+      id: "bodh-gaya-coarse-cell",
+      properties: {
+        name: "Bodh Gaya Block Coarse NWP Grid Cell",
+        resolution: "12 km x 12 km",
+        uniformRainfallMm: 45.0,
+        uniformTempC: 31.4,
+        note: "Coarse Block-level forecast (Source: 45 mm uniform for all Panchayats)"
+      },
+      geometry: {
+        type: "Polygon",
+        coordinates: [
+          [
+            [84.920, 24.660],
+            [85.030, 24.660],
+            [85.030, 24.730],
+            [84.920, 24.730],
+            [84.920, 24.660]
+          ]
+        ]
+      }
+    }
+  ]
+};
+

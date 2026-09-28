@@ -1,7 +1,15 @@
 import React from 'react';
 import { 
   HelpCircle, 
-  ShieldAlert 
+  ShieldAlert,
+  ArrowDown,
+  Layers,
+  CheckCircle2,
+  Cpu,
+  Sprout,
+  Target,
+  Sparkles,
+  Info
 } from 'lucide-react';
 import { Language } from '../types';
 import { TRANSLATIONS } from '../data/translations';
@@ -15,168 +23,294 @@ export const AboutView: React.FC<AboutViewProps> = ({ lang }) => {
 
   return (
     <div style={{ maxWidth: 960, margin: '0 auto' }}>
+      {/* Page Title */}
       <div style={{ marginBottom: 24 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
+          <span style={{ background: '#0284c7', color: '#fff', fontSize: '0.74rem', padding: '3px 8px', borderRadius: 4, fontWeight: 700 }}>
+            SIH 2026 — PROBLEM STATEMENT SIH26074
+          </span>
+          <span style={{ fontSize: '0.82rem', color: '#64748b' }}>Ministry of Earth Sciences / Agriculture</span>
+        </div>
         <h1 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--gov-navy)', display: 'flex', alignItems: 'center', gap: 10 }}>
           <HelpCircle size={26} color="var(--gov-navy)" />
           <span>{lang === 'hi' ? "ग्रामकास्ट के बारे में (About GRAMCAST)" : "About GRAMCAST"}</span>
         </h1>
         <p style={{ fontSize: '0.9rem', color: 'var(--neutral-500)' }}>
-          {t.tagline} • Smart India Hackathon 2026 Project
+          Block-level forecasts. Panchayat-level intelligence. • Weather Forecast Downscaling System
         </p>
       </div>
 
-      {/* SECTION 27: What is GRAMCAST? */}
-      <div className="gov-card" style={{ marginBottom: 20 }}>
-        <h2 style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--gov-navy)', marginBottom: 12 }}>
-          {lang === 'hi' ? "ग्रामकास्ट क्या है? (What is GRAMCAST?)" : "What is GRAMCAST?"}
-        </h2>
-        <p style={{ fontSize: '0.95rem', color: 'var(--neutral-700)', lineHeight: 1.6 }}>
-          <em>“GRAMCAST transforms broader Block-level weather forecasts into localized Panchayat-level weather intelligence using weather observations, satellite information, geography, and physics-guided spatial downscaling.”</em>
-        </p>
-        <p style={{ fontSize: '0.9rem', color: 'var(--neutral-600)', lineHeight: 1.5, marginTop: 12 }}>
-          In India, official weather forecasts are typically issued at the Sub-Division, District, or Block level (covering 12–25 km cells). 
-          However, agricultural operations like irrigation, pesticide spraying, and harvesting depend on conditions within a single village boundary. 
-          GRAMCAST bridges this spatial gap.
-        </p>
-      </div>
-
-      {/* SECTION 27: Why? */}
-      <div className="gov-card" style={{ marginBottom: 20 }}>
-        <h2 style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--gov-navy)', marginBottom: 12 }}>
-          {lang === 'hi' ? "इसकी आवश्यकता क्यों है? (Why?)" : "Why Does Local Resolution Matter?"}
-        </h2>
-        <p style={{ fontSize: '0.95rem', color: 'var(--neutral-700)', lineHeight: 1.6 }}>
-          <em>“Weather can vary significantly across locations within the same Block. More localized information can support better agricultural decisions.”</em>
-        </p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 14, marginTop: 16 }}>
-          <div style={{ padding: 12, background: 'var(--neutral-50)', borderRadius: 8, border: '1px solid var(--neutral-200)' }}>
-            <strong style={{ color: 'var(--gov-navy)', display: 'block', marginBottom: 4 }}>Topographical Variance</strong>
-            <span style={{ fontSize: '0.84rem', color: 'var(--neutral-600)' }}>
-              A ridge-top Panchayat (like Pithoria at 672m) may experience cool breezes and rapid drainage, while a low-lying valley Panchayat (like Sukurhutu at 614m) faces flash waterlogging from the same storm system.
-            </span>
-          </div>
-
-          <div style={{ padding: 12, background: 'var(--neutral-50)', borderRadius: 8, border: '1px solid var(--neutral-200)' }}>
-            <strong style={{ color: 'var(--gov-navy)', display: 'block', marginBottom: 4 }}>Preventing Input Waste</strong>
-            <span style={{ fontSize: '0.84rem', color: 'var(--neutral-600)' }}>
-              A farmer who irrigates or applies expensive pesticides hours before an unpredicted localized downpour suffers heavy financial losses.
-            </span>
-          </div>
+      {/* CORE STATEMENT CARD (Prompt Section 30) */}
+      <div style={{
+        background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%)',
+        color: '#ffffff',
+        borderRadius: 14,
+        padding: 24,
+        marginBottom: 24,
+        border: '1px solid rgba(56, 189, 248, 0.3)',
+        boxShadow: '0 10px 25px -5px rgba(15, 23, 42, 0.3)'
+      }}>
+        <div style={{ fontSize: '0.74rem', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#38bdf8', fontWeight: 700, marginBottom: 8 }}>
+          CORE MANDATE STATEMENT
         </div>
+        <p style={{ fontSize: '1.12rem', fontWeight: 600, lineHeight: 1.6, color: '#f8fafc', margin: 0 }}>
+          “GRAMCAST transforms coarse Block-level weather forecasts into high-resolution Panchayat-level weather intelligence using physics-guided spatial downscaling, enabling localized agro-meteorological advisory services.”
+        </p>
       </div>
 
-      {/* SECTION 27: How It Works */}
-      <div className="gov-card" style={{ marginBottom: 20 }}>
-        <h2 style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--gov-navy)', marginBottom: 16 }}>
-          {lang === 'hi' ? "यह कैसे काम करता है? (How?)" : "How Does It Work?"}
-        </h2>
-        
-        {/* Step Flow */}
+      {/* SECTION 27: ONE CRITICAL VISUAL STORY */}
+      <div className="gov-card" style={{ marginBottom: 24 }}>
+        <div className="gov-card-header">
+          <div className="gov-card-title">
+            <Layers size={20} color="var(--gov-navy)" />
+            <span>The GRAMCAST Transformation Pipeline (The Core Loop)</span>
+          </div>
+          <span className="badge badge-navy">Block ──► Panchayat Pipeline</span>
+        </div>
+
+        <p style={{ fontSize: '0.88rem', color: 'var(--neutral-600)', marginBottom: 20 }}>
+          This visual represents the operational architecture required by SIH Problem Statement SIH26074:
+        </p>
+
+        {/* Vertical Pipeline Flowchart matching Section 27 */}
         <div style={{
           display: 'flex',
-          flexWrap: 'wrap',
+          flexDirection: 'column',
           alignItems: 'center',
-          justifyContent: 'space-between',
           gap: 12,
-          padding: '16px 20px',
-          background: 'var(--neutral-50)',
-          borderRadius: 10,
-          border: '1px solid var(--neutral-200)',
-          marginBottom: 16
+          padding: '24px 16px',
+          background: '#f8fafc',
+          borderRadius: 12,
+          border: '1px solid #e2e8f0'
         }}>
-          <div style={{ textAlign: 'center' }}>
-            <div style={{ fontWeight: 800, color: 'var(--gov-navy)' }}>1. Data</div>
-            <div style={{ fontSize: '0.72rem', color: 'var(--neutral-500)' }}>IMD NWP + Sat</div>
+          {/* Level 1: Block Weather Forecast */}
+          <div style={{
+            background: '#ffffff',
+            border: '2px solid #f59e0b',
+            borderRadius: 10,
+            padding: '14px 28px',
+            textAlign: 'center',
+            boxShadow: '0 4px 6px -1px rgba(245, 158, 11, 0.1)',
+            minWidth: 260
+          }}>
+            <div style={{ fontSize: '0.72rem', color: '#d97706', fontWeight: 800, textTransform: 'uppercase' }}>SOURCE LEVEL</div>
+            <div style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--gov-navy)' }}>BLOCK WEATHER FORECAST</div>
+            <div style={{ fontSize: '0.8rem', color: '#64748b', marginTop: 2 }}>NWP Global Models (~12 km resolution) • e.g. Bodh Gaya: 45 mm</div>
           </div>
-          <div style={{ color: 'var(--neutral-400)' }}>→</div>
 
-          <div style={{ textAlign: 'center' }}>
-            <div style={{ fontWeight: 800, color: '#0284c7' }}>2. Downscaling</div>
-            <div style={{ fontSize: '0.72rem', color: 'var(--neutral-500)' }}>Physics + DEM</div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', color: '#0284c7' }}>
+            <ArrowDown size={24} strokeWidth={2.5} />
           </div>
-          <div style={{ color: 'var(--neutral-400)' }}>→</div>
 
-          <div style={{ textAlign: 'center' }}>
-            <div style={{ fontWeight: 800, color: '#d97706' }}>3. Validation</div>
-            <div style={{ fontSize: '0.72rem', color: 'var(--neutral-500)' }}>Ground AWS Error</div>
-          </div>
-          <div style={{ color: 'var(--neutral-400)' }}>→</div>
-
-          <div style={{ textAlign: 'center' }}>
-            <div style={{ fontWeight: 800, color: '#7c3aed' }}>4. Calibration</div>
-            <div style={{ fontSize: '0.72rem', color: 'var(--neutral-500)' }}>Kalman Filter</div>
-          </div>
-          <div style={{ color: 'var(--neutral-400)' }}>→</div>
-
-          <div style={{ textAlign: 'center' }}>
-            <div style={{ fontWeight: 800, color: '#059669' }}>5. Intelligence</div>
-            <div style={{ fontSize: '0.72rem', color: 'var(--neutral-500)' }}>Panchayat Advisory</div>
-          </div>
-        </div>
-
-        {/* Visual Pair: Space Observation & Ground Reality */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16, marginBottom: 20 }}>
-          <div style={{ borderRadius: 10, overflow: 'hidden', border: '1px solid var(--neutral-300)' }}>
-            <div style={{ height: 160, position: 'relative' }}>
-              <img 
-                src="/images/satellite_weather_view.jpg" 
-                alt="INSAT-3DR Satellite Meteorological Telemetry"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              />
-              <span style={{ position: 'absolute', top: 8, left: 8, background: 'rgba(15,23,42,0.85)', color: '#fff', fontSize: '0.7rem', padding: '2px 8px', borderRadius: 4, fontWeight: 600 }}>
-                1. Orbital Observation
-              </span>
+          {/* Level 2: GRAMCAST Downscaling Engine */}
+          <div style={{
+            background: 'linear-gradient(135deg, #1e3a8a 0%, #0369a1 100%)',
+            color: '#ffffff',
+            borderRadius: 12,
+            padding: '18px 24px',
+            textAlign: 'center',
+            maxWidth: 520,
+            width: '100%',
+            boxShadow: '0 8px 20px rgba(3, 105, 161, 0.25)',
+            border: '1px solid #38bdf8'
+          }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'rgba(255,255,255,0.2)', padding: '2px 10px', borderRadius: 20, fontSize: '0.72rem', fontWeight: 800, marginBottom: 6 }}>
+              <Cpu size={14} />
+              <span>GRAMCAST DOWNSCALING ENGINE</span>
             </div>
-            <div style={{ padding: 12, background: 'var(--neutral-50)' }}>
-              <div style={{ fontWeight: 700, fontSize: '0.88rem', color: 'var(--gov-navy)' }}>Space Telemetry (INSAT-3DR)</div>
-              <div style={{ fontSize: '0.78rem', color: 'var(--neutral-600)', marginTop: 2 }}>
-                Monitors cloud-top brightness temperature, moisture flux, and frontal systems over the subcontinent.
+            <div style={{ fontSize: '1.05rem', fontWeight: 800 }}>Physics + Spatial + Climatology</div>
+            <div style={{ fontSize: '0.82rem', color: '#e0f2fe', marginTop: 6, lineHeight: 1.4 }}>
+              SRTM Elevation (DEM) • NDVI Vegetation Transpiration • HydroSHEDS Basin Drainage • Mass-Conservation Constraints • 10-Yr Climatological Bias Correction
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', color: '#0284c7' }}>
+            <ArrowDown size={24} strokeWidth={2.5} />
+          </div>
+
+          {/* Level 3: Panchayat Level Outputs */}
+          <div style={{
+            background: '#ffffff',
+            border: '2px solid #10b981',
+            borderRadius: 12,
+            padding: 16,
+            textAlign: 'center',
+            maxWidth: 540,
+            width: '100%'
+          }}>
+            <div style={{ fontSize: '0.72rem', color: '#059669', fontWeight: 800, textTransform: 'uppercase', marginBottom: 6 }}>
+              HIGH-RESOLUTION TARGET LEVEL (~1 KM)
+            </div>
+            <div style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--gov-navy)', marginBottom: 10 }}>
+              PANCHAYAT-LEVEL WEATHER INTELLIGENCE
+            </div>
+
+            {/* 4 Panchayat Examples */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8 }}>
+              <div style={{ padding: '8px 4px', background: '#ecfdf5', borderRadius: 6, border: '1px solid #a7f3d0' }}>
+                <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#065f46' }}>Itawan</div>
+                <div style={{ fontSize: '0.95rem', fontWeight: 800, color: '#047857' }}>36 mm</div>
+              </div>
+              <div style={{ padding: '8px 4px', background: '#ecfdf5', borderRadius: 6, border: '1px solid #a7f3d0' }}>
+                <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#065f46' }}>Rural</div>
+                <div style={{ fontSize: '0.95rem', fontWeight: 800, color: '#047857' }}>41 mm</div>
+              </div>
+              <div style={{ padding: '8px 4px', background: '#ecfdf5', borderRadius: 6, border: '1px solid #a7f3d0' }}>
+                <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#065f46' }}>Mocharim</div>
+                <div style={{ fontSize: '0.95rem', fontWeight: 800, color: '#047857' }}>48 mm</div>
+              </div>
+              <div style={{ padding: '8px 4px', background: '#fee2e2', borderRadius: 6, border: '1px solid #fca5a5' }}>
+                <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#991b1b' }}>Bakrour</div>
+                <div style={{ fontSize: '0.95rem', fontWeight: 800, color: '#dc2626' }}>54 mm</div>
               </div>
             </div>
           </div>
 
-          <div style={{ borderRadius: 10, overflow: 'hidden', border: '1px solid var(--neutral-300)' }}>
-            <div style={{ height: 160, position: 'relative' }}>
-              <img 
-                src="/images/agri_weather_station.jpg" 
-                alt="Automatic Agro-Meteorological Weather Station"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              />
-              <span style={{ position: 'absolute', top: 8, left: 8, background: 'rgba(5,150,105,0.9)', color: '#fff', fontSize: '0.7rem', padding: '2px 8px', borderRadius: 4, fontWeight: 600 }}>
-                2. Rural Ground Truth
-              </span>
-            </div>
-            <div style={{ padding: 12, background: 'var(--neutral-50)' }}>
-              <div style={{ fontWeight: 700, fontSize: '0.88rem', color: 'var(--gov-navy)' }}>Automated Weather Stations (AWS)</div>
-              <div style={{ fontSize: '0.78rem', color: 'var(--neutral-600)', marginTop: 2 }}>
-                Collocated farm sensors capture microclimate ground truth for recursive Kalman filter calibration.
-              </div>
-            </div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', color: '#059669' }}>
+            <ArrowDown size={24} strokeWidth={2.5} />
+          </div>
+
+          {/* Level 4: Agro-Meteorological Advisory */}
+          <div style={{
+            background: '#ffffff',
+            border: '2px solid #059669',
+            borderRadius: 10,
+            padding: '12px 24px',
+            textAlign: 'center',
+            boxShadow: '0 4px 6px -1px rgba(5, 150, 105, 0.1)',
+            minWidth: 280
+          }}>
+            <div style={{ fontSize: '0.72rem', color: '#059669', fontWeight: 800, textTransform: 'uppercase' }}>DECISION LAYER</div>
+            <div style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--gov-navy)' }}>AGRO-METEOROLOGICAL ADVISORY</div>
+            <div style={{ fontSize: '0.78rem', color: '#64748b', marginTop: 2 }}>Crop context: Paddy / Maize / Veg + Growth Stage + Soil</div>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', color: '#059669' }}>
+            <ArrowDown size={24} strokeWidth={2.5} />
+          </div>
+
+          {/* Level 5: Farmer Action */}
+          <div style={{
+            background: 'linear-gradient(135deg, #059669 0%, #047857 100%)',
+            color: '#ffffff',
+            borderRadius: 10,
+            padding: '12px 24px',
+            textAlign: 'center',
+            boxShadow: '0 4px 6px -1px rgba(5, 150, 105, 0.2)',
+            minWidth: 260
+          }}>
+            <div style={{ fontSize: '0.72rem', color: '#a7f3d0', fontWeight: 800, textTransform: 'uppercase' }}>OUTCOME</div>
+            <div style={{ fontSize: '1rem', fontWeight: 800 }}>ACTIONABLE FARMER ACTION</div>
+            <div style={{ fontSize: '0.78rem', color: '#e0f2fe', marginTop: 2 }}>Delay irrigation • Protect harvested produce • Avoid spray wash-off</div>
           </div>
         </div>
-
-        <ul style={{ fontSize: '0.88rem', color: 'var(--neutral-700)', paddingLeft: 20, lineHeight: 1.6 }}>
-          <li><strong>Physics Invariance:</strong> Respects mass conservation, hydrostatic equilibrium, and moist adiabatic lapse rate.</li>
-          <li><strong>Farmer-Centric Presentation:</strong> Never exposes neural network architectures or complex formulas to farmers.</li>
-          <li><strong>Accessible Multilingual Delivery:</strong> Available in farmer-friendly Hindi and English with built-in voice narration.</li>
-        </ul>
       </div>
 
-      {/* SECTION 27: Important Disclaimer */}
-      <div style={{
-        background: '#fffbeb',
-        border: '1px solid #fde68a',
-        borderRadius: 12,
-        padding: '20px 24px',
-        marginBottom: 28
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: '#92400e', fontWeight: 700, fontSize: '1.05rem', marginBottom: 8 }}>
-          <ShieldAlert size={22} color="#d97706" />
-          <span>Important Official Disclaimer</span>
+      {/* SECTION 28: THE 6 FINAL SUCCESS CRITERIA QUESTIONS & ANSWERS */}
+      <div className="gov-card" style={{ marginBottom: 24 }}>
+        <div className="gov-card-header">
+          <div className="gov-card-title">
+            <Target size={20} color="var(--gov-navy)" />
+            <span>SIH 2026 Evaluation Criteria & Core Defenses</span>
+          </div>
+          <span className="badge badge-low">Evaluation Q&A</span>
         </div>
-        <p style={{ fontSize: '0.9rem', color: '#78350f', lineHeight: 1.6 }}>
-          <em>“GRAMCAST is a decision-support prototype developed for Smart India Hackathon 2026. Forecasts and recommendations should be interpreted alongside official India Meteorological Department (IMD) weather advisories and local agricultural guidance from Krishi Vigyan Kendras (KVKs).”</em>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 14 }}>
+          {/* Q1 */}
+          <div style={{ padding: 14, background: '#f8fafc', borderRadius: 8, border: '1px solid #e2e8f0' }}>
+            <div style={{ fontSize: '0.76rem', color: '#0284c7', fontWeight: 800, textTransform: 'uppercase' }}>QUESTION 1</div>
+            <div style={{ fontSize: '0.92rem', fontWeight: 700, color: 'var(--gov-navy)', margin: '4px 0 6px 0' }}>
+              What problem are you solving?
+            </div>
+            <div style={{ fontSize: '0.84rem', color: '#334155', lineHeight: 1.45 }}>
+              <strong>Answer:</strong> Weather forecasts are officially available at coarse spatial resolution (~12 km Block level), but agricultural decisions are made at the Panchayat and farm level. Two Panchayats in the same Block experience vastly different weather due to terrain, elevation, and land cover.
+            </div>
+          </div>
+
+          {/* Q2 */}
+          <div style={{ padding: 14, background: '#f8fafc', borderRadius: 8, border: '1px solid #e2e8f0' }}>
+            <div style={{ fontSize: '0.76rem', color: '#0284c7', fontWeight: 800, textTransform: 'uppercase' }}>QUESTION 2</div>
+            <div style={{ fontSize: '0.92rem', fontWeight: 700, color: 'var(--gov-navy)', margin: '4px 0 6px 0' }}>
+              What is your innovation?
+            </div>
+            <div style={{ fontSize: '0.84rem', color: '#334155', lineHeight: 1.45 }}>
+              <strong>Answer:</strong> Physics-guided adaptive spatial downscaling. Rather than unconstrained interpolation, we enforce orographic lapse rates, boundary-layer water conservation, and terrain slope physics.
+            </div>
+          </div>
+
+          {/* Q3 */}
+          <div style={{ padding: 14, background: '#f8fafc', borderRadius: 8, border: '1px solid #e2e8f0' }}>
+            <div style={{ fontSize: '0.76rem', color: '#0284c7', fontWeight: 800, textTransform: 'uppercase' }}>QUESTION 3</div>
+            <div style={{ fontSize: '0.92rem', fontWeight: 700, color: 'var(--gov-navy)', margin: '4px 0 6px 0' }}>
+              What goes into your system?
+            </div>
+            <div style={{ fontSize: '0.84rem', color: '#334155', lineHeight: 1.45 }}>
+              <strong>Answer:</strong> Four categories of data: NWP meteorological forecast variables (rain, temp, wind), spatial features (SRTM DEM, NDVI, HydroSHEDS drainage), INSAT-3DR TIR space telemetry, and 10-year historical station climatology.
+            </div>
+          </div>
+
+          {/* Q4 */}
+          <div style={{ padding: 14, background: '#f8fafc', borderRadius: 8, border: '1px solid #e2e8f0' }}>
+            <div style={{ fontSize: '0.76rem', color: '#0284c7', fontWeight: 800, textTransform: 'uppercase' }}>QUESTION 4</div>
+            <div style={{ fontSize: '0.92rem', fontWeight: 700, color: 'var(--gov-navy)', margin: '4px 0 6px 0' }}>
+              What comes out?
+            </div>
+            <div style={{ fontSize: '0.84rem', color: '#334155', lineHeight: 1.45 }}>
+              <strong>Answer:</strong> Panchayat-level weather intelligence with explicit confidence intervals (e.g. 54 ± 6 mm, 91% confidence) and localized agro-meteorological advisories.
+            </div>
+          </div>
+
+          {/* Q5 */}
+          <div style={{ padding: 14, background: '#f8fafc', borderRadius: 8, border: '1px solid #e2e8f0' }}>
+            <div style={{ fontSize: '0.76rem', color: '#0284c7', fontWeight: 800, textTransform: 'uppercase' }}>QUESTION 5</div>
+            <div style={{ fontSize: '0.92rem', fontWeight: 700, color: 'var(--gov-navy)', margin: '4px 0 6px 0' }}>
+              How do you prove it?
+            </div>
+            <div style={{ fontSize: '0.84rem', color: '#334155', lineHeight: 1.45 }}>
+              <strong>Answer:</strong> Spatial comparison (Block 45mm vs Panchayat 36-54mm), historical station validation benchmarks (MAE & RMSE reduction), and uncertainty bounds.
+            </div>
+          </div>
+
+          {/* Q6 */}
+          <div style={{ padding: 14, background: '#f8fafc', borderRadius: 8, border: '1px solid #e2e8f0' }}>
+            <div style={{ fontSize: '0.76rem', color: '#0284c7', fontWeight: 800, textTransform: 'uppercase' }}>QUESTION 6</div>
+            <div style={{ fontSize: '0.92rem', fontWeight: 700, color: 'var(--gov-navy)', margin: '4px 0 6px 0' }}>
+              Why does it matter?
+            </div>
+            <div style={{ fontSize: '0.84rem', color: '#334155', lineHeight: 1.45 }}>
+              <strong>Answer:</strong> It prevents wasted irrigation electricity, prevents premature pesticide spray wash-off, and protects harvested grain against dampness, directly supporting farmer income.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* SECTION 26: Impact Scope */}
+      <div className="gov-card" style={{ marginBottom: 24 }}>
+        <h2 style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--gov-navy)', marginBottom: 12 }}>
+          Practical Impact on Indian Agro-Meteorological Services
+        </h2>
+        <p style={{ fontSize: '0.9rem', color: 'var(--neutral-700)', lineHeight: 1.6, marginBottom: 14 }}>
+          Better localized weather intelligence provides direct operational benefits to farming communities:
         </p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12 }}>
+          <div style={{ padding: 12, background: 'var(--neutral-50)', borderRadius: 8, border: '1px solid var(--neutral-200)' }}>
+            <strong style={{ color: 'var(--gov-navy)', fontSize: '0.88rem' }}>1. Irrigation Planning</strong>
+            <p style={{ fontSize: '0.8rem', color: '#475569', margin: '4px 0 0 0' }}>Avoid unnecessary tube well pumping and preserve groundwater table.</p>
+          </div>
+          <div style={{ padding: 12, background: 'var(--neutral-50)', borderRadius: 8, border: '1px solid var(--neutral-200)' }}>
+            <strong style={{ color: 'var(--gov-navy)', fontSize: '0.88rem' }}>2. Crop Protection</strong>
+            <p style={{ fontSize: '0.8rem', color: '#475569', margin: '4px 0 0 0' }}>Prevent pesticide and chemical wash-off by verifying dry post-application windows.</p>
+          </div>
+          <div style={{ padding: 12, background: 'var(--neutral-50)', borderRadius: 8, border: '1px solid var(--neutral-200)' }}>
+            <strong style={{ color: 'var(--gov-navy)', fontSize: '0.88rem' }}>3. Harvest Preparedness</strong>
+            <p style={{ fontSize: '0.8rem', color: '#475569', margin: '4px 0 0 0' }}>Safeguard threshed grain with tarpaulins before localized rain starts.</p>
+          </div>
+          <div style={{ padding: 12, background: 'var(--neutral-50)', borderRadius: 8, border: '1px solid var(--neutral-200)' }}>
+            <strong style={{ color: 'var(--gov-navy)', fontSize: '0.88rem' }}>4. Disaster Mitigation</strong>
+            <p style={{ fontSize: '0.8rem', color: '#475569', margin: '4px 0 0 0' }}>Pinpoint specific low-lying Panchayats prone to waterlogging.</p>
+          </div>
+        </div>
       </div>
     </div>
   );

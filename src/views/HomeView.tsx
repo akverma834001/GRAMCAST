@@ -55,25 +55,81 @@ export const HomeView: React.FC<HomeViewProps> = ({
           pointerEvents: 'none'
         }}></div>
 
-        <div style={{ position: 'relative', zIndex: 1, maxWidth: 760 }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,0.12)', padding: '4px 12px', borderRadius: 20, fontSize: '0.78rem', fontWeight: 600, color: '#38bdf8', marginBottom: 16 }}>
+        <div style={{ position: 'relative', zIndex: 1, maxWidth: 860 }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,0.12)', padding: '5px 14px', borderRadius: 20, fontSize: '0.78rem', fontWeight: 700, color: '#38bdf8', marginBottom: 14 }}>
             <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#38bdf8' }}></span>
-            <span>Smart India Hackathon 2026 Prototype</span>
+            <span>SIH Problem Statement: SIH26074 • Weather Forecast Downscaling</span>
           </div>
 
-          <h1 style={{ fontSize: '2.5rem', fontWeight: 800, lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: 12 }}>
+          <h1 style={{ fontSize: '2.6rem', fontWeight: 800, lineHeight: 1.12, letterSpacing: '-0.02em', marginBottom: 8 }}>
             GRAMCAST
           </h1>
 
-          <p style={{ fontSize: '1.28rem', fontWeight: 600, color: '#93c5fd', marginBottom: 8 }}>
-            {t.tagline}
+          <p style={{ fontSize: '1.25rem', fontWeight: 700, color: '#38bdf8', marginBottom: 10 }}>
+            Block-level forecasts. Panchayat-level intelligence.
           </p>
 
-          <p style={{ fontSize: '0.98rem', color: '#cbd5e1', lineHeight: 1.6, marginBottom: 28, maxWidth: 640 }}>
+          <p style={{ fontSize: '0.98rem', color: '#e2e8f0', lineHeight: 1.6, marginBottom: 20, maxWidth: 740, fontWeight: 500 }}>
             {lang === 'hi' 
-              ? "पारंपरिक मौसम मॉडल पूरे प्रखंड (ब्लॉक) को एक समान मानते हैं। ग्रामकास्ट स्थलाकृति, उपग्रह चित्रों और भौतिकी-आधारित डाउनस्केलिंग का उपयोग करके आपकी पंचायत के लिए सटीक मौसम पूर्वानुमान और कृषि सलाह प्रदान करता है।"
-              : "Traditional models provide coarse block forecasts that miss local terrain and rainfall variations. GRAMCAST downscales numerical weather prediction into high-resolution Panchayat-level intelligence designed for Indian farmers."}
+              ? "ग्रामकास्ट भौतिकी-निर्देशित स्थानिक डाउनस्केलिंग का उपयोग करके मोटे ब्लॉक-स्तरीय (10-12 किमी) मौसम पूर्वानुमानों को उच्च-रिजॉल्यूशन ग्राम पंचायत स्तर (1 किमी) के मौसम पूर्वानुमान में बदलता है, जिससे लक्षित कृषि-मौसम सलाह संभव होती है।"
+              : "GRAMCAST transforms coarse Block-level weather forecasts into high-resolution Panchayat-level weather intelligence using physics-guided spatial downscaling, enabling localized agro-meteorological advisory services."}
           </p>
+
+          {/* Core Pipeline Visual Banner */}
+          <div style={{
+            background: 'rgba(15, 23, 42, 0.75)',
+            border: '1px solid rgba(56, 189, 248, 0.3)',
+            borderRadius: 12,
+            padding: '12px 18px',
+            marginBottom: 24,
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: 10,
+            fontSize: '0.8rem'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span className="badge" style={{ background: '#fef3c7', color: '#92400e', fontWeight: 700, fontSize: '0.68rem' }}>SOURCE</span>
+              <span style={{ fontWeight: 600, color: '#ffffff' }}>Block Forecast (12 km)</span>
+            </div>
+            <ArrowRight size={14} color="#38bdf8" />
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span className="badge badge-navy" style={{ fontSize: '0.68rem', background: '#0284c7' }}>ENGINE</span>
+              <span style={{ fontWeight: 600, color: '#ffffff' }}>Physics Downscaling</span>
+            </div>
+            <ArrowRight size={14} color="#38bdf8" />
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span className="badge badge-low" style={{ fontSize: '0.68rem' }}>OUTPUT</span>
+              <span style={{ fontWeight: 600, color: '#ffffff' }}>Panchayat Grid (1 km)</span>
+            </div>
+            <ArrowRight size={14} color="#38bdf8" />
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span className="badge" style={{ background: '#dcfce7', color: '#166534', fontWeight: 700, fontSize: '0.68rem' }}>ACTION</span>
+              <span style={{ fontWeight: 600, color: '#ffffff' }}>Farmer Advisory</span>
+            </div>
+          </div>
+
+          {/* Primary Action Buttons */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginBottom: 28 }}>
+            <button 
+              className="btn btn-success btn-lg"
+              onClick={() => onNavigateTo('panchayat')}
+              style={{ fontWeight: 700, padding: '12px 24px', fontSize: '0.95rem', display: 'flex', alignItems: 'center', gap: 8 }}
+            >
+              <span>{lang === 'hi' ? "पूर्वानुमान एक्सप्लोर करें" : "Explore Forecast"}</span>
+              <ArrowRight size={18} />
+            </button>
+
+            <button 
+              className="btn btn-secondary btn-lg"
+              onClick={() => onNavigateTo('downscale')}
+              style={{ fontWeight: 700, padding: '12px 22px', fontSize: '0.95rem', background: 'rgba(255,255,255,0.15)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)', display: 'flex', alignItems: 'center', gap: 8 }}
+            >
+              <Cpu size={18} />
+              <span>{lang === 'hi' ? "देखें ग्रामकास्ट कैसे काम करता है" : "See How GRAMCAST Works (Downscale Engine)"}</span>
+            </button>
+          </div>
 
           {/* Location Selector Card */}
           <div style={{
@@ -83,13 +139,13 @@ export const HomeView: React.FC<HomeViewProps> = ({
             color: 'var(--neutral-800)',
             boxShadow: '0 10px 25px rgba(0,0,0,0.2)'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: '0.92rem', fontWeight: 700, color: 'var(--gov-navy)' }}>
                 <MapPin size={18} color="#0284c7" />
-                <span>{t.subhead}</span>
+                <span>{lang === 'hi' ? "सक्रिय स्थान चुनें" : "Select Target Administrative Hierarchy"}</span>
               </div>
-              <span className="badge badge-low" style={{ fontSize: '0.7rem' }}>
-                Default: Kanke Block (Ranchi)
+              <span className="badge badge-navy" style={{ fontSize: '0.7rem' }}>
+                Resolution: Block (12 km) ──► Panchayat (1 km)
               </span>
             </div>
 
@@ -120,18 +176,18 @@ export const HomeView: React.FC<HomeViewProps> = ({
               </button>
 
               <button 
-                className="btn btn-success btn-lg"
-                onClick={() => onNavigateTo('panchayat')}
-                style={{ flexShrink: 0 }}
+                className="btn btn-primary"
+                onClick={() => onNavigateTo('downscale')}
+                style={{ padding: '12px 20px', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 6 }}
               >
-                <span>{t.viewMyWeather}</span>
-                <ArrowRight size={18} />
+                <Cpu size={16} />
+                <span>Downscale Block</span>
               </button>
             </div>
 
             <div style={{ marginTop: 14, fontSize: '0.75rem', color: 'var(--neutral-500)', display: 'flex', alignItems: 'center', gap: 6 }}>
               <ShieldCheck size={14} color="#059669" />
-              <span>{t.demoNote}</span>
+              <span>Demonstration Locations Available: Bodh Gaya Block (Bihar) & Kanke Block (Jharkhand)</span>
             </div>
           </div>
         </div>

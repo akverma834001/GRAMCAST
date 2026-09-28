@@ -2,17 +2,21 @@ export type UserRole = 'farmer' | 'officer' | 'technical';
 export type Language = 'en' | 'hi';
 
 export type NavTab = 
-  | 'home'
-  | 'panchayat'
-  | 'map'
-  | 'forecast'
-  | 'risks'
-  | 'agriculture'
-  | 'insights'
-  | 'officer'
-  | 'validation'
-  | 'self-correction'
-  | 'about';
+  | 'overview'       // Landing & Core Pipeline
+  | 'home'           // Alias for overview
+  | 'downscale'      // The Core Feature: Downscale Block Forecast Engine
+  | 'panchayat'      // Farmer View: Local Panchayat dashboard
+  | 'map'            // Panchayat Map (GIS Before vs After comparison)
+  | 'forecast'       // 7-Day Time-series Forecast
+  | 'advisory'       // Agro-Meteorological Advisory & Crop Context
+  | 'agriculture'    // Alias for advisory
+  | 'risks'          // Weather risk alerts
+  | 'validation'     // Validation & Error Analysis (Does Downscaling Improve Local Forecasting?)
+  | 'methodology'    // Technical / Research View & Data Transparency
+  | 'insights'       // Alias for methodology
+  | 'self-correction'// Self-correction loop
+  | 'officer'        // Officer Spatial Monitoring
+  | 'about';         // About GRAMCAST & SIH26074
 
 export type RiskSeverity = 'Low' | 'Moderate' | 'High';
 export type ConfidenceLevel = 'High' | 'Moderate' | 'Limited';
@@ -176,4 +180,71 @@ export interface ValidationTimeSeriesPoint {
   observed: number;
   blockForecast: number;
   gramcastDownscaled: number;
+}
+
+// Downscaling Engine Specific Types
+export interface BlockSourceForecast {
+  blockName: string;
+  district: string;
+  state: string;
+  spatialResolution: string; // "Coarse Block (10–12 km)"
+  modelName: string;        // "NWP Regional Model (GFS / NCUM)"
+  bulletinTime: string;
+  tempC: number;
+  rainfallMm: number;
+  humidity: number;
+  windSpeedKmH: number;
+  rainProb: number;
+  pressureHpa: number;
+}
+
+export interface DownscalingProcessingStep {
+  id: string;
+  title: string;
+  hindiTitle: string;
+  detail: string;
+  hindiDetail: string;
+  state: 'pending' | 'active' | 'done';
+}
+
+export interface PanchayatDownscaledResult {
+  id: string;
+  name: string;
+  hindiName: string;
+  elevationM: number;
+  rainfallMm: number;
+  rainfallUncertaintyMm: number; // e.g., ±6 mm
+  tempC: number;
+  humidity: number;
+  windSpeedKmH: number;
+  confidencePct: number; // e.g. 91%
+  deltaRainMm: number;
+  deltaTempC: number;
+  riskLevel: RiskSeverity;
+  spatialFactors: {
+    name: string;
+    hindiName: string;
+    impact: string;
+    hindiImpact: string;
+    icon: string;
+  }[];
+  advisorySummary: string;
+  hindiAdvisorySummary: string;
+  imageUrl?: string;
+}
+
+export interface CropContextOption {
+  crop: 'Paddy' | 'Maize' | 'Vegetables' | 'Pulses';
+  stage: 'Sowing' | 'Vegetative' | 'Tillering' | 'Flowering' | 'Harvesting';
+  irrigation: 'Rainfed' | 'Borewell' | 'Canal';
+  soil: 'Clay-Loam' | 'Red Laterite' | 'Alluvial Loam';
+}
+
+export interface DataSourceTransparency {
+  category: string;
+  name: string;
+  provider: string;
+  nominalResolution: string;
+  status: 'Live' | 'Historical' | 'Simulated' | 'Demonstration Benchmark';
+  description: string;
 }

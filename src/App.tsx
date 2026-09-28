@@ -7,6 +7,7 @@ import { Sidebar } from './components/Sidebar';
 import { MobileNav } from './components/MobileNav';
 import { LocationModal } from './components/LocationModal';
 import { HomeView } from './views/HomeView';
+import { DownscaleEngineView } from './views/DownscaleEngineView';
 import { MyPanchayatView } from './views/MyPanchayatView';
 import { WeatherMapView } from './views/WeatherMapView';
 import { ForecastView } from './views/ForecastView';
@@ -17,6 +18,7 @@ import { OfficerDashboardView } from './views/OfficerDashboardView';
 import { ValidationView } from './views/ValidationView';
 import { SelfCorrectionView } from './views/SelfCorrectionView';
 import { AboutView } from './views/AboutView';
+import { DemoWalkthroughModal } from './components/DemoWalkthroughModal';
 import './App.css';
 
 export function App() {
@@ -26,6 +28,7 @@ export function App() {
   const [currentLocation, setCurrentLocation] = useState<LocationHierarchy>(DEFAULT_LOCATION);
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
   const [isMobileMoreOpen, setIsMobileMoreOpen] = useState(false);
+  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
 
   // Derive weather data for current Panchayat
   const weather = getPanchayatWeatherData(
@@ -69,6 +72,8 @@ export function App() {
         setLang={setLang}
         onOpenLocationModal={() => setIsLocationModalOpen(true)}
         currentPanchayatName={currentLocation.panchayat}
+        onRunDemoWalkthrough={() => setIsDemoModalOpen(true)}
+        onNavigateTo={setActiveTab}
       />
 
       <div className="main-layout">
@@ -86,10 +91,19 @@ export function App() {
 
         {/* Primary Page Content */}
         <main className="main-content">
-          {activeTab === 'home' && (
+          {(activeTab === 'home' || activeTab === 'overview') && (
             <HomeView
               currentLocation={currentLocation}
               onOpenLocationModal={() => setIsLocationModalOpen(true)}
+              onSelectPanchayat={handleSelectPanchayat}
+              onNavigateTo={setActiveTab}
+              lang={lang}
+            />
+          )}
+
+          {activeTab === 'downscale' && (
+            <DownscaleEngineView
+              currentLocation={currentLocation}
               onSelectPanchayat={handleSelectPanchayat}
               onNavigateTo={setActiveTab}
               lang={lang}
@@ -129,14 +143,14 @@ export function App() {
             />
           )}
 
-          {activeTab === 'agriculture' && (
+          {(activeTab === 'agriculture' || activeTab === 'advisory') && (
             <AgricultureView
               weather={weather}
               lang={lang}
             />
           )}
 
-          {activeTab === 'insights' && (
+          {(activeTab === 'insights' || activeTab === 'methodology') && (
             <InsightsView
               weather={weather}
               lang={lang}
@@ -170,6 +184,15 @@ export function App() {
           )}
         </main>
       </div>
+
+      {/* Demo Walkthrough Modal (45s Automated SIH Evaluator Walkthrough) */}
+      <DemoWalkthroughModal
+        isOpen={isDemoModalOpen}
+        onClose={() => setIsDemoModalOpen(false)}
+        onSelectPanchayat={handleSelectPanchayat}
+        onNavigateTo={setActiveTab}
+        lang={lang}
+      />
 
       {/* Mobile Bottom Navigation */}
       <MobileNav
@@ -223,17 +246,32 @@ export function App() {
             </div>
 
             <button 
-              className={`nav-link ${activeTab === 'forecast' ? 'active' : ''}`}
-              onClick={() => { setActiveTab('forecast'); setIsMobileMoreOpen(false); }}
+              className={`nav-link ${activeTab === 'downscale' ? 'active' : ''}`}
+              style={{ fontWeight: 700, color: '#0284c7' }}
+              onClick={() => { setActiveTab('downscale'); setIsMobileMoreOpen(false); }}
             >
-              7-Day Forecast
+              ⚡ Downscale Engine (Core)
             </button>
 
             <button 
-              className={`nav-link ${activeTab === 'insights' ? 'active' : ''}`}
+              className={`nav-link ${activeTab === 'panchayat' ? 'active' : ''}`}
+              onClick={() => { setActiveTab('panchayat'); setIsMobileMoreOpen(false); }}
+            >
+              📍 My Panchayat
+            </button>
+
+            <button 
+              className={`nav-link ${activeTab === 'forecast' ? 'active' : ''}`}
+              onClick={() => { setActiveTab('forecast'); setIsMobileMoreOpen(false); }}
+            >
+              📅 7-Day Forecast
+            </button>
+
+            <button 
+              className={`nav-link ${activeTab === 'insights' || activeTab === 'methodology' ? 'active' : ''}`}
               onClick={() => { setActiveTab('insights'); setIsMobileMoreOpen(false); }}
             >
-              Insights & Fingerprint
+              🔬 Data & Method (Technical)
             </button>
 
             <button 

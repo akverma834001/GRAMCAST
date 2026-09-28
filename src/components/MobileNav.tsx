@@ -21,19 +21,21 @@ export const MobileNav: React.FC<MobileNavProps> = ({
   return (
     <nav className="mobile-bottom-nav">
       <button 
-        className={`mobile-nav-btn ${activeTab === 'home' ? 'active' : ''}`}
+        className={`mobile-nav-btn ${activeTab === 'home' || activeTab === 'overview' ? 'active' : ''}`}
         onClick={() => setActiveTab('home')}
       >
         <Home size={20} />
-        <span>{t.navHome}</span>
+        <span>{lang === 'hi' ? "होम" : "Home"}</span>
       </button>
 
+      {/* CORE DOWNSCALING BUTTON */}
       <button 
-        className={`mobile-nav-btn ${activeTab === 'panchayat' ? 'active' : ''}`}
-        onClick={() => setActiveTab('panchayat')}
+        className={`mobile-nav-btn ${activeTab === 'downscale' ? 'active' : ''}`}
+        onClick={() => setActiveTab('downscale')}
+        style={{ color: activeTab === 'downscale' ? '#0284c7' : 'inherit' }}
       >
-        <MapPin size={20} />
-        <span>{lang === 'hi' ? "पंचायत" : "My Panchayat"}</span>
+        <span style={{ fontSize: '1.2rem' }}>⚡</span>
+        <span style={{ fontWeight: 700 }}>{lang === 'hi' ? "डाउनस्केल" : "Downscale"}</span>
       </button>
 
       <button 
@@ -45,15 +47,7 @@ export const MobileNav: React.FC<MobileNavProps> = ({
       </button>
 
       <button 
-        className={`mobile-nav-btn ${activeTab === 'risks' ? 'active' : ''}`}
-        onClick={() => setActiveTab('risks')}
-      >
-        <AlertTriangle size={20} />
-        <span>{lang === 'hi' ? "जोखिम" : "Risks"}</span>
-      </button>
-
-      <button 
-        className={`mobile-nav-btn ${activeTab === 'agriculture' ? 'active' : ''}`}
+        className={`mobile-nav-btn ${activeTab === 'agriculture' || activeTab === 'advisory' ? 'active' : ''}`}
         onClick={() => setActiveTab('agriculture')}
       >
         <Sprout size={20} />

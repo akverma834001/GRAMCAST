@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { CloudRain, Globe, User, ShieldAlert, Info, X } from 'lucide-react';
-import { UserRole, Language } from '../types';
+import { UserRole, Language, NavTab } from '../types';
 import { TRANSLATIONS } from '../data/translations';
 
 interface HeaderProps {
@@ -10,6 +10,8 @@ interface HeaderProps {
   setLang: (lang: Language) => void;
   onOpenLocationModal: () => void;
   currentPanchayatName: string;
+  onRunDemoWalkthrough?: () => void;
+  onNavigateTo?: (tab: NavTab) => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -18,7 +20,9 @@ export const Header: React.FC<HeaderProps> = ({
   lang,
   setLang,
   onOpenLocationModal,
-  currentPanchayatName
+  currentPanchayatName,
+  onRunDemoWalkthrough,
+  onNavigateTo
 }) => {
   const [showDemoModal, setShowDemoModal] = useState(false);
   const t = TRANSLATIONS[lang];
@@ -32,15 +36,25 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="demo-banner-content">
           <span className="demo-pill">{t.demoBadge}</span>
           <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-            {t.demoNote}
+            <strong>SIH 2026 Problem SIH26074:</strong> Weather Forecast Downscaling from Block to Panchayat Level
           </span>
+          {onRunDemoWalkthrough && (
+            <button 
+              className="btn btn-sm"
+              style={{ background: '#f59e0b', color: '#78350f', fontWeight: 700, padding: '2px 10px', fontSize: '0.74rem', border: 'none', cursor: 'pointer', borderRadius: 4, display: 'flex', alignItems: 'center', gap: 4 }}
+              onClick={onRunDemoWalkthrough}
+            >
+              <span>⚡</span>
+              <span>Run 45s SIH Demo Walkthrough</span>
+            </button>
+          )}
           <button 
             className="btn btn-sm" 
             style={{ color: '#93c5fd', background: 'transparent', padding: '2px 8px', fontSize: '0.72rem' }}
             onClick={() => setShowDemoModal(true)}
           >
             <Info size={13} style={{ marginRight: 4 }} />
-            About Demo Data
+            Data Transparency
           </button>
         </div>
       </div>
@@ -48,7 +62,7 @@ export const Header: React.FC<HeaderProps> = ({
       {/* Main Top Header */}
       <header className="top-header">
         <div className="header-content">
-          <div className="brand-section" onClick={onOpenLocationModal} title="Click to change Panchayat">
+          <div className="brand-section" onClick={() => onNavigateTo ? onNavigateTo('home') : onOpenLocationModal()} style={{ cursor: 'pointer' }} title="GRAMCAST Home">
             <div className="emblem-icon">
               <CloudRain size={24} />
             </div>
@@ -56,14 +70,32 @@ export const Header: React.FC<HeaderProps> = ({
               <div className="brand-name">
                 GRAMCAST
                 <span style={{ fontSize: '0.65rem', background: '#059669', color: '#fff', padding: '1px 6px', borderRadius: 4, fontWeight: 600 }}>
-                  SIH 2026
+                  SIH26074
                 </span>
               </div>
-              <div className="brand-tagline">{t.tagline}</div>
+              <div className="brand-tagline">Block-level forecasts. Panchayat-level intelligence.</div>
             </div>
           </div>
 
           <div className="header-controls">
+            {/* Resolution Transformation Pill */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+              background: 'rgba(255, 255, 255, 0.08)',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
+              padding: '4px 10px',
+              borderRadius: 20,
+              fontSize: '0.75rem',
+              color: '#e2e8f0'
+            }}>
+              <span style={{ color: '#94a3b8' }}>Resolution:</span>
+              <span style={{ fontWeight: 600, color: '#f59e0b' }}>Block (12 km)</span>
+              <span style={{ color: '#38bdf8' }}>──►</span>
+              <span style={{ fontWeight: 700, color: '#10b981' }}>Panchayat (1 km)</span>
+            </div>
+
             {/* Quick Location Badge */}
             <button 
               className="btn btn-secondary btn-sm"

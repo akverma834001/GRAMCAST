@@ -73,8 +73,9 @@ export const LOCATIONS_DATA: LocationTree = {
     },
     "Gaya": {
       "Bodh Gaya": [
-        "Bodh Gaya Rural",
+        "Bakrour",
         "Mocharim",
+        "Bodh Gaya Rural",
         "Itawan"
       ]
     }
